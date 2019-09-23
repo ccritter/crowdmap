@@ -25,6 +25,7 @@ module.exports = function(wss) {
 
 
   wss.on('connection', (socket) => {
+    console.log('Socket connected.');
     let socketPort = new osc.WebSocketPort({ socket });
 
     socketPort.on('message', (msg, timeTag, info) => {

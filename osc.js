@@ -13,11 +13,11 @@ module.exports = function(wss) {
     console.log(timeTag);
     console.log(info);
     console.log('\n');
-    udp.options.remoteAddress = info.address;
-    udp.options.remotePort = info.port;
+    // udp.options.remoteAddress = info.address;
+    // udp.options.remotePort = info.port;
   });
 
-  udp.on('error', (e) =>{
+  udp.on('error', (e) => {
     console.log(e);
   });
 
@@ -27,6 +27,14 @@ module.exports = function(wss) {
   wss.on('connection', (socket) => {
     let socketPort = new osc.WebSocketPort({ socket });
 
-    let relay = new osc.Relay(udp, socketPort, { raw: true });
+    socketPort.on('message', (msg, timeTag, info) => {
+      console.log('Got Socket:');
+      console.log(msg);
+      console.log(timeTag);
+      console.log(info);
+      console.log('\n');
+    });
+
+    // let relay = new osc.Relay(udp, socketPort, { raw: true });
   });
 }

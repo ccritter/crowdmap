@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  script(src='js/osc-browser.min.js')
+  script.
+    var port = new osc.WebSocketPort({
+      url: 'ws://localhost:3000'
+    });
+    port.on('message', function (oscMsg) {
+      console.log('Got WS: ', oscMsg);
+    });
+    port.open();
+
+    var sayHello = function () {
+      port.send({
+        address: '/hello',
+        args: ['world']
+      });
+    };
+
+  button(onclick='sayHello()') Send OSC message

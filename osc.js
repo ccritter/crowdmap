@@ -41,13 +41,17 @@ module.exports = function(wss) {
     let socketPort = new osc.WebSocketPort({ socket });
 
     socketPort.on('message', (msg, timeTag, info) => {
-      if (msg.address && msg.address === '/is_client' && msg.value) {
-        console.log(socket._socket.address());
-        // console.log(req.headers['x-forwarded-for']);
-        console.log(socket._socket.remoteAddress);
-        console.log(socket._socket.remotePort);
-
+      try {
+        if (msg.address === '/is_client' && msg.args[0]) {
+          console.log(socket._socket.address());
+          // console.log(req.headers['x-forwarded-for']);
+          console.log(socket._socket.remoteAddress);
+          console.log(socket._socket.remotePort);
+        }
+      } catch (e) {
+        print(e)
       }
+
 
       console.log('Got Socket:');
       console.log(msg);

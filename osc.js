@@ -2,8 +2,8 @@ const osc = require('osc');
 
 module.exports = function(wss) {
   let udpPort = new osc.UDPPort({
-    // localAddress: '0.0.0.0',
-    localPort: 57110
+    localAddress: '0.0.0.0',
+    localPort: 57121
   });
 
   udpPort.on('ready', () => {
@@ -12,7 +12,7 @@ module.exports = function(wss) {
     // udpPort.send({
     //   address: "/hello",
     //   args: ['world']
-    // }, "www.crowdmap.fm", 57110);
+    // }, "www.crowdmap.fm", 57121);
   });
 
   udpPort.on('message', (msg, timeTag, info) => {

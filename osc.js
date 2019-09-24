@@ -42,6 +42,10 @@ module.exports = function(wss) {
     console.log('Socket connected.');
     let socketPort = new osc.WebSocketPort({ socket });
 
+    socketPort.on('ready', () => {
+      let relay = new osc.Relay(udpPort, socketPort, { raw: true }); // TODO Eventually pass in the socketport into some UDP class that can then handle the relay?
+    });
+
     socketPort.on('message', (msg, timeTag, info) => {
       try {
         if (msg.address === '/hello') {
@@ -49,8 +53,6 @@ module.exports = function(wss) {
           // addr = addr.split(',')[0]
           // console.log(addr);
 
-        } else {
-          let relay = new osc.Relay(udpPort, socketPort, { raw: true }); // TODO Eventually pass in the socketport into some UDP class that can then handle the relay?
         }
       } catch (e) {
         console.log(e)

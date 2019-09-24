@@ -44,12 +44,12 @@ module.exports = function(wss) {
 
     socketPort.on('message', (msg, timeTag, info) => {
       try {
-        if (msg.address === '/is_client' && msg.args[0]) {
+        if (msg.address === '/hello') {
           // let addr = req.headers['x-forwarded-for'] || socket._socket.remoteAddress
           // addr = addr.split(',')[0]
           // console.log(addr);
 
-          // let relay = new osc.Relay(udp, socketPort, { raw: true });
+          let relay = new osc.Relay(udpPort, socketPort, { raw: true }); // TODO Eventually pass in the socketport into some UDP class that can then handle the relay?
         }
       } catch (e) {
         console.log(e)

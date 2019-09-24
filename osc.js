@@ -2,7 +2,7 @@ const osc = require('osc');
 
 module.exports = function(wss) {
   let udpPort = new osc.UDPPort({
-    localAddress: '0.0.0.0',
+    // localAddress: '0.0.0.0',
     localPort: 57110
   });
 

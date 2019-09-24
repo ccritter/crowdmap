@@ -28,7 +28,7 @@ module.exports = function(wss) {
     console.log('Got UDP:');
     console.log(msg);
     console.log(timeTag);
-    console.log('\n');
+    console.log('');
   });
 
   udpPort.on('error', (e) => {
@@ -49,6 +49,7 @@ module.exports = function(wss) {
           // addr = addr.split(',')[0]
           // console.log(addr);
 
+        } else {
           let relay = new osc.Relay(udpPort, socketPort, { raw: true }); // TODO Eventually pass in the socketport into some UDP class that can then handle the relay?
         }
       } catch (e) {
@@ -58,7 +59,7 @@ module.exports = function(wss) {
       console.log('Got Socket:');
       console.log(msg);
       console.log(timeTag);
-      console.log('\n');
+      console.log('');
     });
   });
 }

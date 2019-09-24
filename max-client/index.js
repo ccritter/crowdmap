@@ -26,7 +26,7 @@ function openUdp(socketPort) {
     console.log(msg);
     console.log(timeTag);
     console.log(info);
-    console.log('\n');
+    console.log('');
   });
 
   udpPort.open();
@@ -54,7 +54,7 @@ function openSocket() {
     console.log(msg);
     console.log(timeTag);
     console.log(info);
-    console.log('\n');
+    console.log('');
   });
 
   socketPort.open();

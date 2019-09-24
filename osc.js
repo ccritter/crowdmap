@@ -52,7 +52,7 @@ module.exports = function(wss) {
       console.log('Got Socket:');
       console.log(msg);
       console.log(timeTag);
-      console.log(info);
+      // console.log(info);
       console.log('\n');
     });
 

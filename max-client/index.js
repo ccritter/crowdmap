@@ -4,19 +4,26 @@ const WebSocket = require('ws');
 function openUdp(socketPort) {
   let udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
-    localPort: 57121
+    localPort: 57121,
+    remoteAddress: 'www.crowdmap.fm',
+    remotePort: 57121
   });
 
   udpPort.on('ready', () => {
     console.log('Listening for OSC over UDP. Sending Hello!');
 
-    socketPort.send({
-      address: '/is_client',
-      args: [{
-        type: 'i',
-        value: 1
-      }]
-    });
+    udpPort.send({
+        address: "/hello",
+        args: []
+      });
+
+    // socketPort.send({
+    //   address: '/is_client',
+    //   args: [{
+    //     type: 'i',
+    //     value: 1
+    //   }]
+    // });
   });
 
   udpPort.on('message', (msg, timeTag, info) => {

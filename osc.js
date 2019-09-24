@@ -1,13 +1,23 @@
 const osc = require('osc');
 
 module.exports = function(wss) {
-  let udp = new osc.UDPPort({});
+  let udpPort = new osc.UDPPort({});
 
-  udp.on('ready', () => {
+  udpPort.on('ready', () => {
     console.log('Listening for OSC over UDP.');
+
+    // udpPort.send({
+    //   address: "/hello",
+    //   args: [
+    //     {
+    //       type: "s",
+    //       value: "world"
+    //     }
+    //   ]
+    // }, "www.crowdmap.fm", 57121);
   });
 
-  udp.on('message', (msg, timeTag, info) => {
+  udpPort.on('message', (msg, timeTag, info) => {
     console.log('Got UDP:');
     console.log(msg);
     console.log(timeTag);
@@ -15,13 +25,22 @@ module.exports = function(wss) {
     console.log('\n');
     // udp.options.remoteAddress = info.address;
     // udp.options.remotePort = info.port;
+    udpPort.send({
+      address: '/hello',
+      args: [
+        {
+          type: 's',
+          value: 'received'
+        }
+      ]
+    }, info.address, info.port);
   });
 
-  udp.on('error', (e) => {
+  udpPort.on('error', (e) => {
     console.log(e);
   });
 
-  udp.open();
+  udpPort.open();
 
 
   wss.on('connection', (socket) => {

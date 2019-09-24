@@ -43,10 +43,15 @@ module.exports = function(wss) {
     socketPort.on('message', (msg, timeTag, info) => {
       try {
         if (msg.address === '/is_client' && msg.args[0]) {
-          // console.log(socket._socket.address());
-          console.log(req.headers['x-forwarded-for'], socket._socket.remoteAddress);
-          // console.log(socket._socket.remoteAddress);
-          // console.log(socket._socket.remotePort);
+          let addr = req.headers['x-forwarded-for'] || socket._socket.remoteAddress
+          addr = addr.split(',')[0]
+          console.log(addr);
+
+          // let relay = new osc.Relay(udp, socketPort, { raw: true });
+          udpPort.send({
+            address: "/hello",
+            args: ['world']
+          }, addr, 57121);
         }
       } catch (e) {
         print(e)
@@ -58,8 +63,8 @@ module.exports = function(wss) {
       console.log(timeTag);
       // console.log(info);
       console.log('\n');
-    });
 
-    // let relay = new osc.Relay(udp, socketPort, { raw: true });
+
+    });
   });
 }

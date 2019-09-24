@@ -7,7 +7,7 @@ block content
   script.
     var port = new osc.WebSocketPort({
       // url: 'ws://localhost:3000'
-      url: 'wss://crowdmap.fm'
+      url: 'ws://crowdmap.fm'
     });
     port.on('message', function (oscMsg) {
       console.log('Got WS: ', oscMsg);

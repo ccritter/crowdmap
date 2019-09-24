@@ -36,17 +36,17 @@ module.exports = function(wss) {
   udpPort.open();
 
 
-  wss.on('connection', (socket) => {
+  wss.on('connection', (socket, req) => {
     console.log('Socket connected.');
     let socketPort = new osc.WebSocketPort({ socket });
 
     socketPort.on('message', (msg, timeTag, info) => {
       try {
         if (msg.address === '/is_client' && msg.args[0]) {
-          console.log(socket._socket.address());
-          // console.log(req.headers['x-forwarded-for']);
-          console.log(socket._socket.remoteAddress);
-          console.log(socket._socket.remotePort);
+          // console.log(socket._socket.address());
+          console.log(req.headers['x-forwarded-for'], socket._socket.remoteAddress);
+          // console.log(socket._socket.remoteAddress);
+          // console.log(socket._socket.remotePort);
         }
       } catch (e) {
         print(e)

@@ -22,11 +22,15 @@ block content
       });
     };
 
+    var output = document.querySelector('.output');
+
     function handleOrientation(event) {
       var absolute = event.absolute;
       var alpha = event.alpha;
       var beta = event.beta;
       var gamma = event.gamma;
+
+      output.innerHTML = 'Beta: ' + beta
 
       port.send({
         address: '/orientation/beta',
@@ -40,3 +44,4 @@ block content
     window.addEventListener("deviceorientation", handleOrientation);
 
   button(onclick='sayHello()') Send OSC message
+  pre.output

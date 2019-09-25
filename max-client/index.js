@@ -2,9 +2,10 @@ const osc = require("osc");
 const WebSocket = require('ws');
 
 const url = 'www.crowdmap.fm';
+// const url = 'localhost';
 const port = 57121
 
-function openUdp(socketPort) {
+function openUdp() {
   let udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
     localPort: port,
@@ -22,11 +23,15 @@ function openUdp(socketPort) {
   });
 
   udpPort.on('message', (msg, timeTag, info) => {
-    console.log('Got UDP:');
+    console.log('Got UDP msg:');
     console.log(msg);
     console.log(timeTag);
-    console.log(info);
+    // console.log(info);
     console.log('');
+  });
+
+  udpPort.on('error', e => {
+    console.log(e);
   });
 
   udpPort.open();
@@ -50,11 +55,15 @@ function openSocket() {
   });
 
   socketPort.on('message', (msg, timeTag, info) => {
-    console.log('Got Socket:');
+    console.log('Got Socket msg:');
     console.log(msg);
     console.log(timeTag);
-    console.log(info);
+    // console.log(info);
     console.log('');
+  });
+
+  socketPort.on('error', e => {
+    console.log(e);
   });
 
   socketPort.open();
@@ -62,5 +71,18 @@ function openSocket() {
   return socketPort;
 }
 
-openUdp();
-openSocket();
+let udp = openUdp();
+let sock = openSocket();
+
+process.on('SIGINT', function() {
+  console.log('goodbye!');
+  udp.send({
+    address: '/goodbye',
+    args: []
+  });
+
+  sock.send({
+    address: '/goodbye',
+    args: []
+  });
+});

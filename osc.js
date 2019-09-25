@@ -1,6 +1,9 @@
 const osc = require('osc');
 
 module.exports = function(wss) {
+
+
+
   let udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
     localPort: 57121
@@ -21,6 +24,10 @@ module.exports = function(wss) {
           address: '/hello',
           args: 'received'
         });
+
+      } else if (msg.address === '/goodbye') {
+        udpPort.options.remoteAddress = undefined;
+        udpPort.options.remotePort = undefined;
       }
     } catch (e) {
       console.log(e);
@@ -41,10 +48,7 @@ module.exports = function(wss) {
   wss.on('connection', (socket, req) => {
     console.log('Socket connected.');
     let socketPort = new osc.WebSocketPort({ socket });
-
-    socketPort.on('ready', () => {
-      let relay = new osc.Relay(udpPort, socketPort, { raw: true }); // TODO Eventually pass in the socketport into some UDP class that can then handle the relay?
-    });
+    let relay = new osc.Relay(udpPort, socketPort, { raw: true }); // TODO Eventually pass in the socketport into some UDP class that can then handle the relay?
 
     socketPort.on('message', (msg, timeTag, info) => {
       try {
@@ -52,7 +56,11 @@ module.exports = function(wss) {
           // let addr = req.headers['x-forwarded-for'] || socket._socket.remoteAddress
           // addr = addr.split(',')[0]
           // console.log(addr);
+          // relay.close();
 
+          // udpPort.send({
+          //
+          // });
         }
       } catch (e) {
         console.log(e)

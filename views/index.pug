@@ -5,7 +5,8 @@ block content
   p Welcome to #{title}
 
   button(onclick='sayHello()') Send OSC message
-  pre.output
+  pre#doeSupported
+  pre#output
 
   script(src='public/js/osc-browser.min.js')
   script.
@@ -26,7 +27,7 @@ block content
       });
     };
 
-    var output = document.querySelector('.output');
+    var output = document.getElementById('output');
 
     function handleOrientation(event) {
       var absolute = event.absolute;
@@ -45,4 +46,11 @@ block content
       });
     }
 
-    window.addEventListener("deviceorientation", handleOrientation);
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', handleOrientation, false);
+      document.getElementById("doeSupported").innerText = "Supported!";
+    } else {
+      document.getElementById("doeSupported").innerText = "Not supported :(";
+    }
+
+}

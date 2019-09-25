@@ -12,6 +12,7 @@ block content
     port.on('message', function (oscMsg) {
       console.log('Got WS: ', oscMsg);
     });
+
     port.open();
 
     var sayHello = function () {
@@ -21,7 +22,6 @@ block content
       });
     };
 
-    window.addEventListener("deviceorientation", handleOrientation, true);
     function handleOrientation(event) {
       var absolute = event.absolute;
       var alpha = event.alpha;
@@ -36,5 +36,7 @@ block content
         }]
       });
     }
+
+    window.addEventListener("deviceorientation", handleOrientation);
 
   button(onclick='sayHello()') Send OSC message

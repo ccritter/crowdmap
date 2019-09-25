@@ -3,6 +3,10 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  button(onclick='sayHello()') Send OSC message
+  pre.output
+
   script(src='public/js/osc-browser.min.js')
   script.
     var port = new osc.WebSocketPort({
@@ -30,7 +34,7 @@ block content
       var beta = event.beta;
       var gamma = event.gamma;
 
-      output.innerHTML = 'Beta: ' + beta
+      output.innerHTML = 'Beta: ' + beta;
 
       port.send({
         address: '/orientation/beta',
@@ -42,6 +46,3 @@ block content
     }
 
     window.addEventListener("deviceorientation", handleOrientation);
-
-  button(onclick='sayHello()') Send OSC message
-  pre.output

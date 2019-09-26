@@ -18,7 +18,7 @@ module.exports = function(wss) {
       if (msg.address === '/hello') {
         // TODO The last client is the only client that gets messages as of now
         udpPort.options.remoteAddress = info.address;
-        udpPort.options.remotePort = 57121; // info.port;
+        udpPort.options.remotePort = info.port;
 
         udpPort.send({
           address: '/hello',

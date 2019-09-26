@@ -38,10 +38,13 @@ block content
       output.innerHTML = 'Beta: ' + beta;
 
       port.send({
-        address: '/orientation/beta',
+        address: '/orientation',
         args: [{
           type: 'f',
           value: beta
+        }, {
+          type: 'f',
+          value: gamma
         }]
       });
     }

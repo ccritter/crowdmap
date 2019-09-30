@@ -1,8 +1,10 @@
 const osc = require('osc');
+// const oscRouter = require('lib/osc-routers');
+const Client = require('./lib/roles/Client');
 
 module.exports = function(wss) {
-
-
+  // Only one client per instance. If I were to add more, I need to establish a reliable way for clients to be removed from the list (or maybe a map?)
+  let client;
 
   let udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
@@ -16,30 +18,22 @@ module.exports = function(wss) {
   udpPort.on('message', (msg, timeTag, info) => {
     try {
       if (msg.address === '/hello') {
-        // TODO The last client is the only client that gets messages as of now
-        udpPort.options.remoteAddress = info.address;
-        udpPort.options.remotePort = info.port;
+        client = new Client(info.address, info.port, udpPort); // TODO Get some sort of state config from the client
 
-        udpPort.send({
-          address: '/hello',
-          args: 'received'
-        });
-
-      } else if (msg.address === '/goodbye') {
-        udpPort.options.remoteAddress = undefined;
-        udpPort.options.remotePort = undefined;
+        // If we haven't configured the Client within 5 seconds (change this time?) disconnect it.
+        setTimeout(() => {
+          if (!client.isActive) {
+            client.remove();
+          }
+        }, 5000);
       }
     } catch (e) {
       console.log(e);
     }
-    console.log('Got UDP:');
-    console.log(msg);
-    console.log(timeTag);
-    console.log('');
   });
 
-  udpPort.on('error', (e) => {
-    console.log(e);
+  udpPort.on('error', e => {
+    console.log('UDP Error', e);
   });
 
   udpPort.open();
@@ -48,28 +42,26 @@ module.exports = function(wss) {
   wss.on('connection', (socket, req) => {
     console.log('Socket connected.');
     let socketPort = new osc.WebSocketPort({ socket });
-    let relay = new osc.Relay(udpPort, socketPort, { raw: true }); // TODO Eventually pass in the socketport into some UDP class that can then handle the relay?
+    // let relay = new osc.Relay(udpPort, socketPort, { raw: true }); // TODO Eventually pass in the socketport into some UDP class that can then handle the relay?
+
+    socketPort.on('bundle', (bundle, timeTag, info) => {
+      console.log(bundle)
+    });
 
     socketPort.on('message', (msg, timeTag, info) => {
-      try {
-        if (msg.address === '/hello') {
-          // let addr = req.headers['x-forwarded-for'] || socket._socket.remoteAddress
-          // addr = addr.split(',')[0]
-          // console.log(addr);
-          // relay.close();
-
-          // udpPort.send({
-          //
-          // });
-        }
-      } catch (e) {
-        console.log(e)
+      console.log('Got Socket message.', msg);
+      if (msg.address === '/hello') {
+        client.configure(socketPort, {}); // TODO msg.config);
+      } else if (msg.address === '/goodbye') {
+        client.remove();
       }
-
-      console.log('Got Socket:');
-      console.log(msg);
-      console.log(timeTag);
-      console.log('');
     });
+
+    socketPort.on('error', e => {
+      console.log('Socket Error', e)
+    });
+
+    socketPort.open();
   });
 }
+

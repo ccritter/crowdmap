@@ -1,14 +1,17 @@
 const osc = require("osc");
 const WebSocket = require('ws');
 
-const url = 'crowdmap.fm';
-// const url = 'localhost';
+// const url = 'crowdmap.fm';
+const url = 'localhost';
 const port = 57121
+
+let udp = openUdp();
+let sock;
 
 function openUdp() {
   let udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
-    localPort: port,
+    localPort: 57122, // port,
     remoteAddress: url,
     remotePort: port
   });
@@ -23,6 +26,11 @@ function openUdp() {
   });
 
   udpPort.on('message', (msg, timeTag, info) => {
+    if (msg.address === '/hello') {
+      console.log('Client registered successfully.');
+      sock = openSocket();
+    }
+
     console.log('Got UDP msg:');
     console.log(msg);
     console.log(timeTag);
@@ -41,7 +49,7 @@ function openUdp() {
 
 function openSocket() {
   let socketPort = new osc.WebSocketPort({
-    url: 'wss://' + url,
+    url: 'ws://' + url + ':3000', // TODO DELETE THIS PORT, and change back to WSS!!!
     metadata: true
   });
 
@@ -50,8 +58,8 @@ function openSocket() {
 
     socketPort.send({
       address: '/hello',
-      args: []
-    })
+      args: [JSON.stringify({type: 'echo', source:'test'})]
+    });
   });
 
   socketPort.on('message', (msg, timeTag, info) => {
@@ -71,18 +79,14 @@ function openSocket() {
   return socketPort;
 }
 
-let udp = openUdp();
-let sock = openSocket();
 
 process.on('SIGINT', function() {
   console.log('goodbye!');
-  udp.send({
-    address: '/goodbye',
-    args: []
-  });
 
-  sock.send({
-    address: '/goodbye',
-    args: []
-  });
+  if (sock) {
+    sock.send({
+      address: '/goodbye',
+      args: []
+    });
+  }
 });

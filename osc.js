@@ -1,6 +1,6 @@
 const osc = require('osc');
 // const oscRouter = require('lib/osc-routers');
-const Client = require('./lib/roles/Client');
+const Client = require('./lib/core/Client');
 
 module.exports = function(wss) {
   // Only one client per instance. If I were to add more, I need to establish a reliable way for clients to be removed from the list (or maybe a map?)

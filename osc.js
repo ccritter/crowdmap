@@ -1,4 +1,5 @@
 const osc = require('osc');
+const uuidv4 = require('uuid/v4');
 // const oscRouter = require('lib/osc-routers');
 const Client = require('./lib/core/Client');
 
@@ -42,6 +43,8 @@ module.exports = function(wss) {
 
   wss.on('connection', (socket, req) => {
     console.log('Socket connected.');
+    // TODO Do I need to check that it's unique?
+    socket.id = uuidv4();
     let socketPort = new osc.WebSocketPort({ socket });
 
     // socketPort.on('bundle', (bundle, timeTag, info) => {
@@ -49,7 +52,7 @@ module.exports = function(wss) {
     // });
 
     let msgHandler = (msg, timeTag, info) => {
-      console.log('Got Socket message.', msg);
+      // console.log('Got Socket message.', msg);
       if (msg.address === '/hello') {
         // Remove the message listener, since the client creates its own message listening function.
         socketPort.removeListener('message', msgHandler);
@@ -57,7 +60,7 @@ module.exports = function(wss) {
         client.configure(socketPort, config);
       } else {
         if (client && client.isActive) {
-          client.update(msg); // TODO pass in timetag?
+          client.update(msg, socket.id); // TODO pass in timetag?
         }
       }
     }
@@ -66,6 +69,13 @@ module.exports = function(wss) {
 
     socketPort.on('error', e => {
       console.log('Socket Error', e)
+    });
+
+    socket.on('close', () => {
+      // TODO Need to check heartbeat for terminated connections as well: https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
+      // console.log('test', socket.id);
+      // TODO Do this better. This is ugly and not encapsulated.
+      client.state.audience.removeMember(socket.id);
     });
 
     socketPort.open();

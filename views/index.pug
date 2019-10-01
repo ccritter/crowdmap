@@ -4,7 +4,7 @@ block content
   h1= title
   p Welcome to #{title}
 
-  button(onclick='sayHello()') Send OSC message
+  //button(onclick='sayHello()') Send OSC message
   pre#doeSupported
   pre#output
 
@@ -41,6 +41,9 @@ block content
         timeTag: osc.timeTag(0),
         packets: [
           {
+            address: '/orientation/alpha',
+            args: [{type: 'f', value: gamma}]
+          }, {
             address: '/orientation/beta',
             args: [{type: 'f', value: beta}]
           }, {

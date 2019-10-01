@@ -38,14 +38,16 @@ block content
       output.innerHTML = 'Beta: ' + beta;
 
       port.send({
-        address: '/orientation',
-        args: [{
-          type: 'f',
-          value: beta
-        }, {
-          type: 'f',
-          value: gamma
-        }]
+        timeTag: osc.timeTag(0),
+        packets: [
+          {
+            address: '/orientation/beta',
+            args: [{type: 'f', value: beta}]
+          }, {
+            address: '/orientation/gamma',
+            args: [{type: 'f', value: gamma}]
+          }
+        ]
       });
     }
 

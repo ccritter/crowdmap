@@ -58,7 +58,13 @@ function openSocket() {
 
     socketPort.send({
       address: '/hello',
-      args: [JSON.stringify({type: 'echo', source:'test'})]
+      args: [{
+        type: 's',
+        value: JSON.stringify([
+          {address: '/orientation/beta', type: 'echo', source:'test'},
+          {address: '/orientation/gamma', type: 'echo', source:'test'}
+        ])
+      }]
     });
   });
 
@@ -83,10 +89,14 @@ function openSocket() {
 process.on('SIGINT', function() {
   console.log('goodbye!');
 
+  udp.close();
+
   if (sock) {
     sock.send({
       address: '/goodbye',
       args: []
     });
+
+    sock.close();
   }
 });

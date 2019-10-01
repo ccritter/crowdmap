@@ -57,7 +57,9 @@ module.exports = function(wss) {
       } else if (msg.address === '/goodbye') {
         client.remove();
       } else {
-        client.update(msg); // TODO pass in timetag?
+        if (client.isActive) {
+          client.update(msg); // TODO pass in timetag?
+        }
       }
     });
 

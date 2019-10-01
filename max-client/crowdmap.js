@@ -63,9 +63,9 @@ function openSocket() {
       args: [{
         type: 's',
         value: JSON.stringify([
-          {address: '/orientation/alpha', type: 'echo', source:'test'},
-          {address: '/orientation/beta', type: 'echo', source:'test'},
-          {address: '/orientation/gamma', type: 'echo', source:'test'}
+          {address: '/orientation/alpha', type: 1, source:'test'},
+          {address: '/orientation/beta', type: 1, source:'test'},
+          {address: '/orientation/gamma', type: 1, source:'test'}
         ])
       }]
     })

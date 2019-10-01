@@ -31,11 +31,11 @@ function openUdp() {
       sock = openSocket();
     }
 
-    console.log('Got UDP msg:');
-    console.log(msg);
-    console.log(timeTag);
+    console.log('Got UDP msg:', msg);
+    // console.log(msg);
+    // console.log(timeTag);
     // console.log(info);
-    console.log('');
+    // console.log('');
   });
 
   udpPort.on('error', e => {
@@ -69,11 +69,11 @@ function openSocket() {
   });
 
   socketPort.on('message', (msg, timeTag, info) => {
-    console.log('Got Socket msg:');
-    console.log(msg);
-    console.log(timeTag);
+    console.log('Got Socket msg:', msg);
+    // console.log(msg);
+    // console.log(timeTag);
     // console.log(info);
-    console.log('');
+    // console.log('');
   });
 
   socketPort.on('error', e => {

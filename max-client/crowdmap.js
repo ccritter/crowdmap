@@ -6,10 +6,13 @@ const url = 'crowdmap.fm';
 // const url = 'localhost';
 const port = 57121
 
+let udp = openUdp();
+let sock;
+
 function openUdp() {
   let udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
-    localPort: port,
+    localPort: 57122, // port,
     remoteAddress: url,
     remotePort: port
   });
@@ -24,7 +27,12 @@ function openUdp() {
   });
 
   udpPort.on('message', (msg, timeTag, info) => {
-    Max.outlet(msg.address, ...msg.args);
+    if (msg.address === '/hello') {
+      console.log('Client registered successfully.');
+      sock = openSocket();
+    } else {
+      Max.outlet(msg.address, ...msg.args);
+    }
     // console.log('Got UDP msg:');
     // console.log(msg);
     // console.log(timeTag);
@@ -52,16 +60,22 @@ function openSocket() {
 
     socketPort.send({
       address: '/hello',
-      args: []
+      args: [{
+        type: 's',
+        value: JSON.stringify([
+          {address: '/orientation/beta', type: 'echo', source:'test'},
+          {address: '/orientation/gamma', type: 'echo', source:'test'}
+        ])
+      }]
     })
   });
 
   socketPort.on('message', (msg, timeTag, info) => {
     console.log('Got Socket msg:');
-    console.log(msg);
-    console.log(timeTag);
+    // console.log(msg);
+    // console.log(timeTag);
     // console.log(info);
-    console.log('');
+    // console.log('');
   });
 
   socketPort.on('error', e => {
@@ -73,18 +87,18 @@ function openSocket() {
   return socketPort;
 }
 
-let udp = openUdp();
-let sock = openSocket();
 
 process.on('SIGINT', function() {
   console.log('goodbye!');
-  udp.send({
-    address: '/goodbye',
-    args: []
-  });
 
-  sock.send({
-    address: '/goodbye',
-    args: []
-  });
+  udp.close();
+
+  if (sock) {
+    sock.send({
+      address: '/goodbye',
+      args: []
+    });
+
+    sock.close();
+  }
 });

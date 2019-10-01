@@ -43,25 +43,26 @@ module.exports = function(wss) {
   wss.on('connection', (socket, req) => {
     console.log('Socket connected.');
     let socketPort = new osc.WebSocketPort({ socket });
-    // let relay = new osc.Relay(udpPort, socketPort, { raw: true }); // TODO Eventually pass in the socketport into some UDP class that can then handle the relay?
 
     // socketPort.on('bundle', (bundle, timeTag, info) => {
     //   console.log(bundle)
     // });
 
-    socketPort.on('message', (msg, timeTag, info) => {
+    let msgHandler = (msg, timeTag, info) => {
       console.log('Got Socket message.', msg);
       if (msg.address === '/hello') {
+        // Remove the message listener, since the client creates its own message listening function.
+        socketPort.removeListener('message', msgHandler);
         let config = JSON.parse(msg.args[0]);
         client.configure(socketPort, config);
-      } else if (msg.address === '/goodbye') {
-        client.remove();
       } else {
         if (client && client.isActive) {
           client.update(msg); // TODO pass in timetag?
         }
       }
-    });
+    }
+
+    socketPort.on('message', msgHandler);
 
     socketPort.on('error', e => {
       console.log('Socket Error', e)

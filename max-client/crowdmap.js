@@ -57,18 +57,21 @@ function openSocket() {
 
   socketPort.on('ready', () => {
     console.log('Socket connected. Sending Hello!');
-
-    socketPort.send({
-      address: '/hello',
-      args: [{
-        type: 's',
-        value: JSON.stringify([
-          {address: '/orientation/alpha', type: 1, source:'test'},
-          {address: '/orientation/beta', type: 1, source:'test'},
-          {address: '/orientation/gamma', type: 1, source:'test'}
-        ])
-      }]
-    })
+    
+    Max.getDict('config').then((dict, err) => {
+      console.log(JSON.stringify(dict));
+      // socketPort.send({
+      //   address: '/hello',
+      //   args: [{
+      //     type: 's',
+      //     value: JSON.stringify([
+      //       {address: '/orientation/alpha', type: 1, source:'test'},
+      //       {address: '/orientation/beta', type: 1, source:'test'},
+      //       {address: '/orientation/gamma', type: 1, source:'test'}
+      //     ])
+      //   }]
+      // });
+    });
   });
 
   socketPort.on('message', (msg, timeTag, info) => {
@@ -87,7 +90,6 @@ function openSocket() {
 
   return socketPort;
 }
-
 
 process.on('SIGINT', function() {
   console.log('goodbye!');

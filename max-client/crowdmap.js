@@ -59,22 +59,27 @@ function openSocket() {
     console.log('Socket connected. Sending Hello!');
     
     Max.getDict('config').then((dict, err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        socketPort.send({
+          address: '/hello',
+          args: [{
+            type: 's',
+            value: JSON.stringify(dict)
+          }]
+        });
+      }
       console.log(JSON.stringify(dict));
-      // socketPort.send({
-      //   address: '/hello',
-      //   args: [{
-      //     type: 's',
-      //     value: JSON.stringify([
-      //       {address: '/orientation/alpha', type: 1, source:'test'},
-      //       {address: '/orientation/beta', type: 1, source:'test'},
-      //       {address: '/orientation/gamma', type: 1, source:'test'}
-      //     ])
-      //   }]
-      // });
     });
 
     Max.addHandler('update', (address, isActive) => {
-    	console.log(address, isActive);
+      socketPort.send({
+        address: '/' + address,
+        args: [{
+          type: isActive ? 'T' : 'F'
+        }]
+      });
     });
   });
 

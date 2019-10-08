@@ -72,6 +72,10 @@ function openSocket() {
       //   }]
       // });
     });
+
+    Max.addHandler('update', (address, isActive) => {
+    	console.log(address, isActive);
+    });
   });
 
   socketPort.on('message', (msg, timeTag, info) => {

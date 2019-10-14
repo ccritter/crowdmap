@@ -4,7 +4,6 @@ block content
   h1= title
   p Welcome to #{title}
 
-  //button(onclick='sayHello()') Send OSC message
   pre#doeSupported
   pre#output
 
@@ -14,8 +13,14 @@ block content
       // url: 'ws://localhost:3000'
       url: 'wss://crowdmap.fm'
     });
+
+    var currentDestination;
+    var currentSource;
+
     port.on('message', function (oscMsg) {
       console.log('Got WS: ', oscMsg);
+      currentDestination = oscMsg.address;
+      currentSource = oscMsg.args[0];
     });
 
     port.open();

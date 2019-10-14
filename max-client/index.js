@@ -1,9 +1,11 @@
 const osc = require("osc");
 const WebSocket = require('ws');
 
-const url = 'crowdmap.fm';
-// const url = 'localhost';
+// const url = 'crowdmap.fm';
+const url = 'localhost';
 const port = 57121
+
+let interval;
 
 let udp = openUdp();
 let sock;
@@ -29,9 +31,9 @@ function openUdp() {
     if (msg.address === '/hello') {
       console.log('Client registered successfully.');
       sock = openSocket();
+    } else {
+      console.log('Got UDP msg:', msg);
     }
-
-    console.log('Got UDP msg:', msg);
     // console.log(msg);
     // console.log(timeTag);
     // console.log(info);
@@ -49,7 +51,7 @@ function openUdp() {
 
 function openSocket() {
   let socketPort = new osc.WebSocketPort({
-    url: 'wss://' + url, // TODO DELETE THIS PORT, and change back to WSS!!!
+    url: 'ws://' + url + ':3000', // TODO DELETE THIS PORT, and change back to WSS!!!
     metadata: true
   });
 
@@ -61,12 +63,22 @@ function openSocket() {
       args: [{
         type: 's',
         value: JSON.stringify([
-          {address: '/orientation/alpha', type: 1, source:'test'},
-          {address: '/orientation/beta', type: 1, source:'test'},
-          {address: '/orientation/gamma', type: 1, source:'test'}
+          {address: '/1', aggType: 1, source:0},
+          {address: '/2', aggType: 1, source:1},
+          {address: '/3', aggType: 1, source:0}
         ])
       }]
     });
+
+
+    let bool = false;
+    interval = setInterval(() => {
+      bool = !bool;
+      socketPort.send({
+        address: '/1',
+        args: [{ type: bool ? 'T' : 'F' }]
+      });
+    }, 1000);
   });
 
   socketPort.on('message', (msg, timeTag, info) => {
@@ -89,7 +101,7 @@ function openSocket() {
 
 process.on('SIGINT', function() {
   console.log('goodbye!');
-
+  clearInterval(interval);
   udp.close();
 
   if (sock) {

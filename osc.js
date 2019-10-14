@@ -4,24 +4,40 @@ const uuidv4 = require('uuid/v4');
 const Client = require('./lib/core/Client');
 
 module.exports = function(wss) {
-  // Only one client per instance. If I were to add more, I need to establish a reliable way for clients to be removed from the list (or maybe a map?)
+  // Only one client per instance.
   let client;
 
+  /**
+   * Stateful UDPPort instance. Will be our primary interface for sending data to the Max client.
+   * Stores remote Client info in its options.
+   * @type {UDPPort}
+   */
   let udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
     localPort: 57121
   });
 
+  /**
+   * Not particularly necessary, just convenient to see when we're ready.
+   */
   udpPort.on('ready', () => {
     console.log('Listening for OSC over UDP.');
   });
 
+  /**
+   * Handler for UDP messages. The only UDP messages the server receives is a /hello message from the client
+   * so that the server knows where to send messages. TODO: Create a non UDP-mode as a failsafe (only WebSocket)
+   *
+   * @param msg JSON containing the OSC address and args
+   * @param timeTag OSC Timetag of the message
+   * @param info Protocol specific message/sender info
+   */
   udpPort.on('message', (msg, timeTag, info) => {
     try {
       if (msg.address === '/hello') {
-        client = new Client(info.address, info.port, udpPort); // TODO Get some sort of state config from the client
+        client = new Client(info.address, info.port, udpPort);
 
-        // If we haven't configured the Client within 5 seconds (change this time?) disconnect it.
+        // If we haven't configured the Client within 5 seconds disconnect it.
         setTimeout(() => {
           if (!client.isActive) {
             // TODO Let client know that it needs the TCP hello as well.
@@ -46,6 +62,10 @@ module.exports = function(wss) {
     // TODO Do I need to check that it's unique?
     socket.id = uuidv4();
     let socketPort = new osc.WebSocketPort({ socket });
+    // TODO If no client connected, put them in some sort of holding area?
+    if (client) {
+      client.addAudienceMember(socket);
+    }
 
     // socketPort.on('bundle', (bundle, timeTag, info) => {
     //   console.log(bundle)
@@ -55,9 +75,11 @@ module.exports = function(wss) {
       // console.log('Got Socket message.', msg);
       if (msg.address === '/hello') {
         // Remove the message listener, since the client creates its own message listening function.
+        // TODO Will error out if a /hello is sent with no client (maybe by some malicious audience)
         socketPort.removeListener('message', msgHandler);
         let config = JSON.parse(msg.args[0]);
         client.configure(socketPort, config);
+        client.removeAudienceMember(socket); // Remove the client's own socket.
       } else {
         if (client && client.isActive) {
           client.update(msg, socket.id); // TODO pass in timetag?
@@ -73,9 +95,10 @@ module.exports = function(wss) {
 
     socket.on('close', () => {
       // TODO Need to check heartbeat for terminated connections as well: https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
-      // console.log('test', socket.id);
       // TODO Do this better. This is ugly and not encapsulated.
-      client.state.audience.removeMember(socket.id);
+      if (client) {
+        client.removeAudienceMember(socket);
+      }
     });
 
     socketPort.open();

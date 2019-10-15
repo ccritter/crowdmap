@@ -15,8 +15,8 @@ class App extends React.Component {
 
   componentDidMount () {
     this.port = new osc.WebSocketPort({
-      url: 'ws://localhost:3000/ws'
-      // url: 'wss://crowdmap.fm/ws'
+      // url: 'ws://localhost:3000/ws'
+      url: 'wss://crowdmap.fm/ws'
     });
 
     this.port.on('message', (oscMsg) => {

@@ -1,8 +1,8 @@
 const osc = require("osc");
 const WebSocket = require('ws');
 
-const url = 'crowdmap.fm';
-// const url = 'localhost';
+// const url = 'crowdmap.fm';
+const url = 'localhost';
 const port = 57121
 
 let interval;
@@ -51,7 +51,7 @@ function openUdp() {
 
 function openSocket() {
   let socketPort = new osc.WebSocketPort({
-    url: 'wss://' + url + '/ws', // TODO DELETE THIS PORT, and change back to WSS!!!
+    url: 'ws://' + url + ':3000/ws', // TODO DELETE THIS PORT, and change back to WSS!!!
     metadata: true
   });
 

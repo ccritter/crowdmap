@@ -58,10 +58,3 @@ block content
         ]
       });
     }
-
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', handleOrientation, false);
-      document.getElementById("doeSupported").innerText = "Supported!";
-    } else {
-      document.getElementById("doeSupported").innerText = "Not supported :(";
-    }

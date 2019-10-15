@@ -60,11 +60,11 @@ module.exports = function(wss) {
   wss.on('connection', (socket, req) => {
     console.log('Socket connected.');
     // TODO Do I need to check that it's unique?
-    socket.id = uuidv4();
     let socketPort = new osc.WebSocketPort({ socket });
+    socketPort.id = uuidv4();
     // TODO If no client connected, put them in some sort of holding area?
     if (client) {
-      client.addAudienceMember(socket);
+      client.addAudienceMember(socketPort);
     }
 
     // socketPort.on('bundle', (bundle, timeTag, info) => {
@@ -79,10 +79,10 @@ module.exports = function(wss) {
         socketPort.removeListener('message', msgHandler);
         let config = JSON.parse(msg.args[0]);
         client.configure(socketPort, config);
-        client.removeAudienceMember(socket); // Remove the client's own socket.
+        client.removeAudienceMember(socketPort); // Remove the client's own socket.
       } else {
         if (client && client.isActive) {
-          client.update(msg, socket.id); // TODO pass in timetag?
+          client.update(msg, socketPort.id); // TODO pass in timetag?
         }
       }
     }
@@ -97,7 +97,7 @@ module.exports = function(wss) {
       // TODO Need to check heartbeat for terminated connections as well: https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
       // TODO Do this better. This is ugly and not encapsulated.
       if (client) {
-        client.removeAudienceMember(socket);
+        client.removeAudienceMember(socketPort);
       }
     });
 

@@ -4,9 +4,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 // const logger = require('morgan');
 
-
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+// TODO DELETE THIS FILE!!!!!!
+// const indexRouter = require('./routes/index');
+// const usersRouter = require('./routes/users');
 
 let app = express();
 

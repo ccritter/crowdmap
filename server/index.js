@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/server/env node
 
 /**
  * Module dependencies.
@@ -24,8 +24,8 @@ const port = normalizePort(process.env.PORT || '3000');
 // const server = http.createServer(app);
 // const wss = new WebSocket.Server({ server });
 // const server = http.createServer();
-const wss = new WebSocket.Server({ port })
-const osc = require('../osc')(wss);
+const wss = new WebSocket.Server({ port });
+const osc = require('./osc')(wss);
 
 /**
  * Listen on provided port, on all network interfaces.

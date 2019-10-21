@@ -1,7 +1,6 @@
 const osc = require('osc');
 const uuidv4 = require('uuid/v4');
-// const oscRouter = require('lib/osc-routers');
-const Client = require('./lib/core/Client');
+const Client = require('../lib/core/Client');
 
 module.exports = function(wss) {
   // Only one client per instance.
@@ -37,10 +36,13 @@ module.exports = function(wss) {
       if (msg.address === '/hello') {
         client = new Client(info.address, info.port, udpPort);
 
-        // If we haven't configured the Client within 5 seconds disconnect it.
+        // If we haven't configured the Client within 5 seconds, disconnect it.
         setTimeout(() => {
-          if (!client.isActive) {
-            // TODO Let client know that it needs the TCP hello as well.
+          if (!client.isConfigured) {
+            udpPort.send({
+              address: '/error',
+              args: ['No TCP handshake received.']
+            });
             client.remove();
           }
         }, 5000);
@@ -59,12 +61,17 @@ module.exports = function(wss) {
 
   wss.on('connection', (socket, req) => {
     console.log('Socket connected.');
-    // TODO Do I need to check that it's unique?
+
     let socketPort = new osc.WebSocketPort({ socket });
     socketPort.id = uuidv4();
+
     // TODO If no client connected, put them in some sort of holding area?
-    if (client) {
+    let waitingRoom = [];
+
+    if (client && client.isActive) {
       client.addAudienceMember(socketPort);
+    }  else {
+      waitingRoom.push(socket);
     }
 
     // socketPort.on('bundle', (bundle, timeTag, info) => {
@@ -75,11 +82,21 @@ module.exports = function(wss) {
       // console.log('Got Socket message.', msg);
       if (msg.address === '/hello') {
         // Remove the message listener, since the client creates its own message listening function.
-        // TODO Will error out if a /hello is sent with no client (maybe by some malicious audience)
-        socketPort.removeListener('message', msgHandler);
-        let config = JSON.parse(msg.args[0]);
-        client.configure(socketPort, config);
-        client.removeAudienceMember(socketPort); // Remove the client's own socket.
+        if (client && !client.isConfigured) {
+          socketPort.removeListener('message', msgHandler);
+          let config = JSON.parse(msg.args[0]);
+          client.configure(socketPort, config);
+
+          waitingRoom.forEach(sock => {
+            if (sock.id !== client.socket.id) {
+              client.addAudienceMember(sock);
+            }
+          });
+          waitingRoom = [];
+          // client.removeAudienceMember(socketPort); // Remove the client's own socket. TODO Shouldn't be necessary due to waiting room feature
+        } else {
+          console.log('Configuration attempt without active client or already configured client.');
+        }
       } else {
         if (client && client.isActive) {
           client.update(msg, socketPort.id); // TODO pass in timetag?
@@ -95,9 +112,13 @@ module.exports = function(wss) {
 
     socket.on('close', () => {
       // TODO Need to check heartbeat for terminated connections as well: https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
-      // TODO Do this better. This is ugly and not encapsulated.
       if (client) {
-        client.removeAudienceMember(socketPort);
+        if (socket.id === client.socket.id) {
+          client.remove();
+          client = undefined;
+        } else {
+          client.removeAudienceMember(socketPort);
+        }
       }
     });
 

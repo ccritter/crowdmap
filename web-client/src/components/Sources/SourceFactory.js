@@ -16,5 +16,7 @@ export default function SourceFactory(data) {
       return <RestView viewData={data}/>
     case srcTypes.orient:
       return <OrientationView viewData={data}/>
+    // case srcTypes.accel:
+    //   return <AccelerationView viewData={data}/>
   }
 }

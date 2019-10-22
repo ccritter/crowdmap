@@ -63,9 +63,9 @@ function openSocket() {
       args: [{
         type: 's',
         value: JSON.stringify([
-          {address: '/1', aggType: 1, source: 0},
-          {address: '/2', aggType: 1, source: 1},
-          {address: '/3', aggType: 1, source: 0}
+          {address: 1, aggType: 1, source: 0},
+          {address: 2, aggType: 1, source: 1},
+          {address: 3, aggType: 1, source: 0}
         ])
       }]
     });

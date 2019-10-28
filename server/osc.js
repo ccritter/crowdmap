@@ -5,6 +5,7 @@ const Client = require('../lib/core/Client');
 module.exports = function(wss) {
   // Only one client per instance.
   let client;
+  let waitingRoom = [];
 
   /**
    * Stateful UDPPort instance. Will be our primary interface for sending data to the Max client.
@@ -38,7 +39,7 @@ module.exports = function(wss) {
 
         // If we haven't configured the Client within 5 seconds, disconnect it.
         setTimeout(() => {
-          if (!client.isConfigured) {
+          if (client && !client.isConfigured) {
             udpPort.send({
               address: '/error',
               args: ['No TCP handshake received.']
@@ -65,12 +66,10 @@ module.exports = function(wss) {
     let socketPort = new osc.WebSocketPort({ socket });
     socketPort.id = uuidv4();
 
-    let waitingRoom = [];
-
     if (client && client.isActive) {
       client.addAudienceMember(socketPort);
     }  else {
-      waitingRoom.push(socket);
+      waitingRoom.push(socketPort);
     }
 
     // socketPort.on('bundle', (bundle, timeTag, info) => {
@@ -82,12 +81,14 @@ module.exports = function(wss) {
       if (msg.address === '/hello') {
         // Remove the message listener, since the client creates its own message listening function.
         if (client && !client.isConfigured) {
+          console.log('Configuring client...', socketPort.id);
           socketPort.removeListener('message', msgHandler);
           let config = JSON.parse(msg.args[0]);
           client.configure(socketPort, config);
-
+          console.log(waitingRoom.map(s => s.id));
           waitingRoom.forEach(sock => {
             if (sock.id !== client.socket.id) {
+              console.log('adding...', sock.id)
               client.addAudienceMember(sock);
             }
           });
@@ -112,7 +113,7 @@ module.exports = function(wss) {
     socket.on('close', () => {
       // TODO Need to check heartbeat for terminated connections as well: https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
       if (client) {
-        if (socket.id === client.socket.id) {
+        if (socketPort.id === client.socket.id) {
           client.remove();
           client = undefined;
         } else {

@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../../assets/images/logo.svg';
+// import logo from '../../assets/images/logo.svg';
 import './App.css';
 import * as osc from 'osc/dist/osc-browser';
 import SourceFactory from '../Sources/SourceFactory';
@@ -15,17 +15,21 @@ class App extends React.Component {
 
   componentDidMount () {
     this.port = new osc.WebSocketPort({
-      // url: 'ws://localhost:3000/ws'
-      url: 'wss://crowdmap.fm/ws'
+      url: 'ws://localhost:3000/ws'
+      // url: 'wss://crowdmap.fm/ws'
     });
 
     this.port.on('message', (oscMsg) => {
       console.log('Got WS: ', oscMsg);
-      this.setState({
-        destination: oscMsg.address.substring(1),
-        // sourceType: oscMsg.args[0]
-        sourceType: Number(oscMsg.address.substring(1))
-      });
+      let destination = oscMsg.address.substring(1);
+      let sourceType;
+      if (destination === '0') {
+        sourceType = 0;
+      } else {
+        sourceType = oscMsg.args[0];
+      }
+      console.log(sourceType);
+      this.setState({ destination, sourceType });
     });
 
     this.port.open();
@@ -37,7 +41,7 @@ class App extends React.Component {
       // document.getElementById("doeSupported").innerText = "Supported!";
     } else {
       // document.getElementById("doeSupported").innerText = "Not supported :(";
-      console.log('Supported!');
+      console.log('Unupported!');
     }
   }
 

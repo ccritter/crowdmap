@@ -31,10 +31,6 @@ function openUdp() {
     } else {
       console.log('Got UDP msg:', msg);
     }
-    // console.log(msg);
-    // console.log(timeTag);
-    // console.log(info);
-    // console.log('');
   });
 
   udpPort.on('error', e => {
@@ -48,7 +44,8 @@ function openUdp() {
 
 function openSocket() {
   let socketPort = new osc.WebSocketPort({
-    url: 'ws://' + url + ':3000/ws', // TODO DELETE THIS PORT, and change back to WSS!!!
+    url: 'ws://' + url + ':3000/ws',
+    // url: 'wss://' + url + '/ws',
     metadata: true
   });
 
@@ -60,9 +57,9 @@ function openSocket() {
       args: [{
         type: 's',
         value: JSON.stringify([
-          {address: 1, aggType: 1, source: 0},
-          {address: 2, aggType: 1, source: 1},
-          {address: 3, aggType: 1, source: 0}
+          {address: 1, aggType: 1, source: 1},
+          {address: 2, aggType: 1, source: 2},
+          {address: 3, aggType: 1, source: 1}
         ])
       }]
     });

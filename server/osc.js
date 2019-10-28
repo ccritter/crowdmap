@@ -65,7 +65,6 @@ module.exports = function(wss) {
     let socketPort = new osc.WebSocketPort({ socket });
     socketPort.id = uuidv4();
 
-    // TODO If no client connected, put them in some sort of holding area?
     let waitingRoom = [];
 
     if (client && client.isActive) {

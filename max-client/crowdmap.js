@@ -20,10 +20,7 @@ function openUdp() {
   udpPort.on('ready', () => {
     console.log('UDP Ready. Sending Hello!');
 
-    udpPort.send({
-        address: '/hello',
-        args: []
-      });
+    udpPort.send({address: '/hello'});
   });
 
   udpPort.on('message', (msg, timeTag, info) => {
@@ -76,9 +73,7 @@ function openSocket() {
     Max.addHandler('update', (address, isActive) => {
       socketPort.send({
         address: '/' + address,
-        args: [{
-          type: isActive ? 'T' : 'F'
-        }]
+        args: [{ type: isActive ? 'T' : 'F' }]
       });
     });
   });
@@ -107,8 +102,7 @@ process.on('SIGINT', function() {
 
   if (sock) {
     sock.send({
-      address: '/goodbye',
-      args: []
+      address: '/goodbye'
     });
 
     sock.close();

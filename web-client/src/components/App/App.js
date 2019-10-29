@@ -21,9 +21,9 @@ class App extends React.Component {
 
     this.port.on('message', (oscMsg) => {
       console.log('Got WS: ', oscMsg);
-      let destination = oscMsg.address.substring(1);
+      let destination = oscMsg.address;
       let sourceType;
-      if (destination === '0') {
+      if (destination === '/0') {
         sourceType = 0;
       } else {
         sourceType = oscMsg.args[0];

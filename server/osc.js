@@ -88,18 +88,17 @@ module.exports = function(wss) {
           console.log(waitingRoom.map(s => s.id));
           waitingRoom.forEach(sock => {
             if (sock.id !== client.socket.id) {
-              console.log('adding...', sock.id)
               client.addAudienceMember(sock);
             }
           });
           waitingRoom = [];
-          // client.removeAudienceMember(socketPort); // Remove the client's own socket. TODO Shouldn't be necessary due to waiting room feature
         } else {
           console.log('Configuration attempt without active client or already configured client.');
         }
       } else {
+        console.log(msg);
         if (client && client.isActive) {
-          client.update(msg, socketPort.id); // TODO pass in timetag?
+          client.update(msg, socketPort.id);
         }
       }
     }
@@ -119,6 +118,8 @@ module.exports = function(wss) {
         } else {
           client.removeAudienceMember(socketPort);
         }
+      } else {
+        waitingRoom.splice(waitingRoom.findIndex(s => s.id === socketPort.id), 1);
       }
     });
 

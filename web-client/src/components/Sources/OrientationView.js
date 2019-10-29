@@ -8,9 +8,9 @@ export default class RestView extends React.Component {
       alpha: 0,
       beta: 0,
       gamma: 0
-    }
+    };
 
-    this.handleOrientation = this.handleOrientation.bind(this)
+    this.handleOrientation = this.handleOrientation.bind(this);
   }
 
   componentDidMount() {

@@ -26,6 +26,7 @@ function openUdp() {
   udpPort.on('message', (msg, timeTag, info) => {
     if (msg.address === '/hello') {
       console.log('Client registered successfully.');
+	  Max.outlet('status', true); // TODO Delete this from here
       sock = openSocket();
     } else {
       Max.outlet(msg.address, ...msg.args);
@@ -48,7 +49,7 @@ function openUdp() {
 
 function openSocket() {
   let socketPort = new osc.WebSocketPort({
-    url: 'wss://' + url,
+    url: 'wss://' + url + '/ws',
     metadata: true
   });
 
@@ -79,7 +80,11 @@ function openSocket() {
   });
 
   socketPort.on('message', (msg, timeTag, info) => {
-    console.log('Got Socket msg:');
+	if (msg.address == '/hello') {
+      Max.outlet('status', true); // TODO Make sure the server sends ack
+	} else {
+      console.log('Got Socket msg:', msg);
+	}
     // console.log(msg);
     // console.log(timeTag);
     // console.log(info);
@@ -96,6 +101,14 @@ function openSocket() {
 }
 
 process.on('SIGINT', function() {
+  process.exit();
+});
+
+process.on('exit', function(code) {
+  cleanup();
+});
+
+function cleanUp() {
   console.log('goodbye!');
 
   udp.close();
@@ -107,4 +120,5 @@ process.on('SIGINT', function() {
 
     sock.close();
   }
-});
+  Max.outlet('status', false);
+}

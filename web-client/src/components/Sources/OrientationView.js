@@ -26,12 +26,13 @@ export default class RestView extends React.Component {
   handleOrientation(event) {
     // var absolute = event.absolute;
     this.setState({
-      alpha: event.alpha,
-      beta: event.beta,
-      gamma: event.gamma
+      alpha: event.alpha / 360,
+      beta: (event.beta + 180) / 360,
+      gamma: (event.gamma + 90) / 180
     });
 
-    // output.innerHTML = 'Beta: ' + beta;
+    // TODO: Currently just sends beta.
+    this.props.socket.send({ address: this.props.destination, args: [{ type: 's', value: this.state.beta }] });
 
     // port.send({
     //   timeTag: osc.timeTag(0),
@@ -54,9 +55,10 @@ export default class RestView extends React.Component {
     return (
       <div>
         Spin Device
-        {this.state.alpha}
+        <br/>
+        {/*{this.state.alpha}*/}
         {this.state.beta}
-        {this.state.gamma}
+        {/*{this.state.gamma}*/}
       </div>
     )
   }

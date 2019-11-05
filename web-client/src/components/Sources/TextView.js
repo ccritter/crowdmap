@@ -16,8 +16,8 @@ export default class RestView extends React.Component {
   }
 
   handleSubmit(event) {
-    this.props.socket.send({ address: this.props.destination, args: [{ type: 's', value: this.state.value }] })
-    this.setState({ value: '' })
+    this.props.socket.send({ address: this.props.destination, args: [{ type: 's', value: this.state.value }] });
+    this.setState({ value: '' });
     event.preventDefault();
   }
 

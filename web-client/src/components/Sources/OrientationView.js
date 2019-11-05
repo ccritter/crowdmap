@@ -32,7 +32,7 @@ export default class RestView extends React.Component {
     });
 
     // TODO: Currently just sends beta.
-    this.props.socket.send({ address: this.props.destination, args: [{ type: 's', value: this.state.beta }] });
+    this.props.socket.send({ address: this.props.destination, args: [{ type: 'f', value: this.state.beta }] });
 
     // port.send({
     //   timeTag: osc.timeTag(0),

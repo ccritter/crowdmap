@@ -25,7 +25,7 @@ function openUdp() {
 
   udpPort.on('message', (msg, timeTag, info) => {
     if (msg.address === '/hello') {
-      console.log('Client registered successfully.');
+      console.log('UDP registered successfully.');
       sock = openSocket();
     } else {
       Max.outlet(msg.address, ...msg.args);
@@ -63,11 +63,11 @@ function openSocket() {
           address: '/hello',
           args: [{
             type: 's',
-            value: JSON.stringify(dict)
+            value: JSON.stringify(dict.data)
           }]
         });
       }
-      console.log(JSON.stringify(dict));
+      console.log(JSON.stringify(dict.data));
     });
 
     Max.addHandler('update', (address, isActive) => {
@@ -80,7 +80,8 @@ function openSocket() {
 
   socketPort.on('message', (msg, timeTag, info) => {
     if (msg.address === '/hello') {
-        Max.outlet('status', true);
+      console.log('Socket registered successfully');
+      Max.outlet('status', true);
     } else {
         console.log('Got Socket msg:', msg);
     }

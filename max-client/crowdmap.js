@@ -2,8 +2,8 @@ const osc = require("osc");
 const WebSocket = require('ws');
 const Max = require('max-api');
 
-const url = 'crowdmap.fm';
-// const url = 'localhost';
+// const url = 'crowdmap.fm';
+const url = 'localhost';
 const port = 57121
 
 let udp = openUdp();
@@ -48,7 +48,8 @@ function openUdp() {
 
 function openSocket() {
   let socketPort = new osc.WebSocketPort({
-    url: 'wss://' + url + '/ws',
+    url: 'ws://' + url + ':3000/ws',
+    // url: 'wss://' + url + '/ws',
     metadata: true
   });
 
@@ -83,7 +84,8 @@ function openSocket() {
       console.log('Socket registered successfully');
       Max.outlet('status', true);
     } else {
-        console.log('Got Socket msg:', msg);
+      // TODO Eventually put errors into an outlet and display it on the Live device
+      console.log('Got Socket msg:', msg);
     }
     // console.log(msg);
     // console.log(timeTag);

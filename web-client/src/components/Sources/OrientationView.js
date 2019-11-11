@@ -1,16 +1,39 @@
 import React from 'react';
+import { srcTypes } from './SourceFactory'
 
 export default class RestView extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      alpha: 0,
-      beta: 0,
-      gamma: 0
-    };
+    this.alpha = 0;
+    this.beta = 0;
+    this.gamma = 0;
+
+    switch (this.props.config.srcType) {
+      case srcTypes.orient:
+        this.send = () => this.sendData(this.alpha, this.beta, this.gamma);
+        break;
+      case srcTypes.orienta:
+        this.send = () => this.sendData(this.alpha);
+        break;
+      case srcTypes.orientb:
+        this.send = () => this.sendData(this.beta);
+        break;
+      case srcTypes.orientg:
+        this.send = () => this.sendData(this.gamma);
+        break;
+      default:
+        throw Error('Invalid source type for OrientationView.');
+    }
 
     this.handleOrientation = this.handleOrientation.bind(this);
+  }
+
+  sendData(...args) {
+    this.props.config.socket.send({
+      address: this.props.config.destination,
+      args: args.map(e => {return { type: 'f', value: e }})
+    });
   }
 
   componentDidMount() {
@@ -25,40 +48,17 @@ export default class RestView extends React.Component {
 
   handleOrientation(event) {
     // var absolute = event.absolute;
-    this.setState({
-      alpha: event.alpha / 360,
-      beta: (event.beta + 180) / 360,
-      gamma: (event.gamma + 90) / 180
-    });
+    this.alpha = event.alpha || 0;
+    this.beta = event.beta || 0;
+    this.gamma = event.gamma || 0;
 
-    // TODO: Currently just sends beta.
-    this.props.config.socket.send({ address: this.props.config.destination, args: [{ type: 'f', value: this.state.beta }] });
-
-    // port.send({
-    //   timeTag: osc.timeTag(0),
-    //   packets: [
-    //     {
-    //       address: '/orientation/alpha',
-    //       args: [{type: 'f', value: alpha}]
-    //     }, {
-    //       address: '/orientation/beta',
-    //       args: [{type: 'f', value: beta}]
-    //     }, {
-    //       address: '/orientation/gamma',
-    //       args: [{type: 'f', value: gamma}]
-    //     }
-    //   ]
-    // });
+    this.send();
   }
 
   render() {
     return (
       <div className="fullscreen">
         {this.props.config.prompt}
-        <br/>
-        {/*{this.state.alpha}*/}
-        {this.state.beta}
-        {/*{this.state.gamma}*/}
       </div>
     )
   }

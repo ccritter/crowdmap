@@ -1,16 +1,43 @@
 import React from 'react';
+import { srcTypes } from './SourceFactory'
 
 export default class MovementView extends React.Component {
   constructor(props) {
     super(props)
 
-    // this.state = {
-    //   x: 0,
-    //   y: 0,
-    //   z: 0
-    // };
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.rotationRate = 0;
+
+    switch (this.props.config.srcType) {
+      case srcTypes.accel:
+        this.send = () => this.sendData(this.x, this.y, this.z, this.rotationRate);
+        break;
+      case srcTypes.accelx:
+        this.send = () => this.sendData(this.x);
+        break;
+      case srcTypes.accely:
+        this.send = () => this.sendData(this.y);
+        break;
+      case srcTypes.accelz:
+        this.send = () => this.sendData(this.z);
+        break;
+      // case srcTypes.accelr:
+      //   this.send = () => this.sendData(this.rotationRate);
+      //   break;
+      default:
+        throw Error('Invalid source type for MovementView.');
+    }
 
     this.handleMotion = this.handleMotion.bind(this);
+  }
+
+  sendData(...args) {
+    this.props.config.socket.send({
+      address: this.props.config.destination,
+      args: args.map(e => {return { type: 'f', value: e }})
+    });
   }
 
   componentDidMount() {
@@ -24,25 +51,13 @@ export default class MovementView extends React.Component {
   }
 
   handleMotion(event) {
-    // this.setState({
-    //   x: event.devicemotion.x,
-    //   y: event.devicemotion.y,
-    //   z: event.devicemotion.z
-    // });
+    console.log(event);
+    this.x = event.acceleration.x;
+    this.y = event.acceleration.y;
+    this.z = event.acceleration.z;
+    // this.rotationRate = event.rotationRate; // TODO No rotation rate at the moment.
 
-    // this.x = event.devicemotion.x;
-    // this.y = event.devicemotion.y;
-    // this.z = event.devicemotion.z;
-    // this.props.config.socket.send({ address: this.props.config.destination, args: [{ type: 'f', value: this.state.beta }] });
-
-    port.send({
-      address: this.props.config.destination,
-      args: [
-        { type: 'f', value: event.devicemotion.x },
-        { type: 'f', value: event.devicemotion.y },
-        { type: 'f', value: event.devicemotion.z }
-      ]
-    });
+    this.send();
   }
 
   render() {

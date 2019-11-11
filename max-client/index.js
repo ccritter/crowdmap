@@ -57,9 +57,9 @@ function openSocket() {
       args: [{
         type: 's',
         value: JSON.stringify([
-          {address: 1, aggType: 1, source: 1, prompt: 'Test'},
-          {address: 2, aggType: 2, source: 2, prompt: 'Helloooooo'},
-          {address: 3, aggType: 1, source: 3, prompt: '*'}
+          {address: 1, aggType: 2, source: 1, prompt: 'Test'},
+          // {address: 2, aggType: 2, source: 2, prompt: 'Helloooooo'},
+          // {address: 3, aggType: 3, source: 3, prompt: '*'}
         ])
       }]
     });
@@ -69,7 +69,7 @@ function openSocket() {
     interval = setInterval(() => {
       bool = bool ? 0 : 1;
       socketPort.send({
-        address: '/2',
+        address: '/1',
         args: [{ type: bool ? 'T' : 'F' }]
       });
     }, 1000);

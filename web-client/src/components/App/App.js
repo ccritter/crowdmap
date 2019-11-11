@@ -2,15 +2,16 @@ import React from 'react';
 // import logo from '../../assets/images/logo.svg';
 import './App.css';
 import * as osc from 'osc/dist/osc-browser';
-import SourceFactory from '../Sources/SourceFactory';
+import { SourceFactory } from '../Sources/SourceFactory';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      destination: 0,
+      destination: '/0',
       sourceType: 0,
-      prompt: 'Please wait for the show to begin.'
+      prompt: 'Please wait for the show to begin.',
+      ready: false
     }
   }
 
@@ -35,20 +36,27 @@ class App extends React.Component {
     });
 
     this.port.open();
+    // TODO Use this.
+    this.setState({ ready: true });
 
-    // TODO Determine all the things that are and aren't supported by this client.
-    if (window.DeviceOrientationEvent) {
-      console.log('Supported!');
-      // window.addEventListener('deviceorientation', handleOrientation, false);
-      // document.getElementById("doeSupported").innerText = "Supported!";
-    } else {
-      // document.getElementById("doeSupported").innerText = "Not supported :(";
-      console.log('Unupported!');
-    }
   }
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     navigator.vibrate(200);
+  }
+
+  checkCompatibility() {
+    if (window.DeviceOrientationEvent) {
+
+    }
+
+    if (window.DeviceMotionEvent) {
+
+    }
+
+    if ('vibrate' in navigator) {
+      
+    }
   }
 
   render() {

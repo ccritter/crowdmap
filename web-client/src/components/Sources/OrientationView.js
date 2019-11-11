@@ -32,7 +32,7 @@ export default class RestView extends React.Component {
     });
 
     // TODO: Currently just sends beta.
-    this.props.socket.send({ address: this.props.destination, args: [{ type: 'f', value: this.state.beta }] });
+    this.props.config.socket.send({ address: this.props.config.destination, args: [{ type: 'f', value: this.state.beta }] });
 
     // port.send({
     //   timeTag: osc.timeTag(0),
@@ -53,8 +53,8 @@ export default class RestView extends React.Component {
 
   render() {
     return (
-      <div>
-        Spin Device
+      <div className="fullscreen">
+        {this.props.config.prompt}
         <br/>
         {/*{this.state.alpha}*/}
         {this.state.beta}

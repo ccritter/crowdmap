@@ -2,26 +2,29 @@ import React from 'react'
 import RestView from './RestView'
 import OrientationView from './OrientationView'
 import TextView from './TextView'
+import TapView from './TapView'
 
 // TODO Import this from the lib
 const srcTypes = Object.freeze({
   rest: 0,
-  text: 1,
-  orient: 2,
-  accel: 3,
+  tap: 1,
+  text: 2,
+  orient: 3,
+  accel: 4,
 });
 
 export default function SourceFactory(data) {
-  console.log(data);
   switch (data.srcType) {
     case srcTypes.rest:
-      return <RestView socket={data.socket} destination={data.destination}/>
+      return <RestView config={data}/>;
+    case srcTypes.tap:
+      return <TapView config={data}/>;
     case srcTypes.text:
-      return <TextView socket={data.socket} destination={data.destination}/>
+      return <TextView config={data}/>;
     case srcTypes.orient:
-      return <OrientationView socket={data.socket} destination={data.destination}/>
+      return <OrientationView config={data}/>;
     default:
-      return <RestView socket={data.socket} destination={data.destination}/>
+      return <RestView config={data}/>;
     // case srcTypes.accel:
     //   return <AccelerationView viewData={data}/>
   }

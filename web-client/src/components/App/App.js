@@ -9,27 +9,29 @@ class App extends React.Component {
     super(props);
     this.state = {
       destination: 0,
-      sourceType: 0
+      sourceType: 0,
+      prompt: 'Please wait for the show to begin.'
     }
   }
 
   componentDidMount () {
     this.port = new osc.WebSocketPort({
-      // url: 'ws://localhost:3000/ws'
-      url: 'wss://crowdmap.fm/ws'
+      url: 'ws://localhost:3000/ws'
+      // url: 'wss://crowdmap.fm/ws'
     });
 
     this.port.on('message', (oscMsg) => {
-      console.log('Got WS: ', oscMsg);
+      // console.log('Got WS: ', oscMsg);
       let destination = oscMsg.address;
+      let prompt = oscMsg.args[1];
       let sourceType;
       if (destination === '/0') {
+        prompt = 'Please wait.'
         sourceType = 0;
       } else {
         sourceType = oscMsg.args[0];
       }
-      console.log(sourceType);
-      this.setState({ destination, sourceType });
+      this.setState({ destination, sourceType, prompt });
     });
 
     this.port.open();
@@ -45,24 +47,30 @@ class App extends React.Component {
     }
   }
 
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    navigator.vibrate(200);
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <SourceFactory destination={this.state.destination} srcType={this.state.sourceType} socket={this.port}/>
-          {/*<img src={logo} className="App-logo" alt="logo" />*/}
-          {/*<p>*/}
-          {/*  Edit <code>src/App.js</code> and save to reload.*/}
-          {/*</p>*/}
-          {/*<a*/}
-          {/*  className="App-link"*/}
-          {/*  href="https://reactjs.org"*/}
-          {/*  target="_blank"*/}
-          {/*  rel="noopener noreferrer"*/}
-          {/*>*/}
-          {/*  Learn React*/}
-          {/*</a>*/}
-        </header>
+        <SourceFactory destination={this.state.destination}
+                       srcType={this.state.sourceType}
+                       prompt={this.state.prompt}
+                       socket={this.port}
+        />
+        {/*<img src={logo} className="App-logo" alt="logo" />*/}
+        {/*<p>*/}
+        {/*  Edit <code>src/App.js</code> and save to reload.*/}
+        {/*</p>*/}
+        {/*<a*/}
+        {/*  className="App-link"*/}
+        {/*  href="https://reactjs.org"*/}
+        {/*  target="_blank"*/}
+        {/*  rel="noopener noreferrer"*/}
+        {/*>*/}
+        {/*  Learn React*/}
+        {/*</a>*/}
       </div>
     );
   }

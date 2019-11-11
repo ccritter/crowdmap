@@ -1,8 +1,8 @@
 const osc = require("osc");
 const WebSocket = require('ws');
 
-const url = 'crowdmap.fm';
-// const url = 'localhost';
+// const url = 'crowdmap.fm';
+const url = 'localhost';
 const port = 57121
 
 let interval;
@@ -44,8 +44,8 @@ function openUdp() {
 
 function openSocket() {
   let socketPort = new osc.WebSocketPort({
-    // url: 'ws://' + url + ':3000/ws',
-    url: 'wss://' + url + '/ws',
+    url: 'ws://' + url + ':3000/ws',
+    // url: 'wss://' + url + '/ws',
     metadata: true
   });
 
@@ -57,17 +57,17 @@ function openSocket() {
       args: [{
         type: 's',
         value: JSON.stringify([
-          {address: 1, aggType: 1, source: 1},
-          {address: 2, aggType: 2, source: 2},
-          {address: 3, aggType: 1, source: 3}
+          {address: 1, aggType: 1, source: 1, prompt: 'Test'},
+          {address: 2, aggType: 2, source: 2, prompt: 'Helloooooo'},
+          {address: 3, aggType: 1, source: 3, prompt: '*'}
         ])
       }]
     });
 
 
-    let bool = false;
+    let bool = 0;
     interval = setInterval(() => {
-      bool = !bool;
+      bool = bool ? 0 : 1;
       socketPort.send({
         address: '/2',
         args: [{ type: bool ? 'T' : 'F' }]

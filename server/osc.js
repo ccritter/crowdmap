@@ -115,6 +115,7 @@ module.exports = function(wss) {
         if (socketPort.id === client.socket.id) {
           client.remove();
           client = undefined;
+          // TODO Move everyone back into the waiting room
         } else {
           client.removeAudienceMember(socketPort);
         }

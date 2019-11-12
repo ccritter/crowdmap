@@ -27,7 +27,7 @@ export default class RestView extends React.Component {
       <div className="fullscreen">
         {this.props.config.prompt}
         <form onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="Prompt?" onChange={this.handleChange} value={this.state.value}/>
+          <input type="text" placeholder="Type" onChange={this.handleChange} value={this.state.value}/>
         </form>
       </div>
     )

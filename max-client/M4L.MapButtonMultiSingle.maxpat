@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 293.0, 375.0, 969.0, 645.0 ],
+		"rect" : [ 430.0, 192.0, 969.0, 645.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 10.0,
@@ -44,8 +44,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 60.0, 320.0, 150.0, 52.0 ],
-					"text" : "This patch cable stores the value the param was pre-mapping. Use this to reset the value when inactive"
+					"patching_rect" : [ 72.0, 147.0, 150.0, 52.0 ],
+					"text" : "This outlet stores the value the param was pre-mapping. Use this to reset the value when inactive"
 				}
 
 			}
@@ -85,12 +85,13 @@
 					"presentation_rect" : [ 226.999999165534973, 1.0, 72.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.menu",
+							"parameter_initial_enable" : 1,
+							"parameter_mmax" : 2,
+							"parameter_initial" : [ 0.0 ],
 							"parameter_shortname" : "live.menu",
 							"parameter_enum" : [ "Echo", "Audience Avg", "Running Avg" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.menu",
-							"parameter_mmax" : 2,
-							"parameter_initial" : [ 1.0 ]
+							"parameter_type" : 2
 						}
 
 					}
@@ -555,7 +556,7 @@
 													"maxclass" : "inlet",
 													"numinlets" : 0,
 													"numoutlets" : 1,
-													"outlettype" : [ "bang" ],
+													"outlettype" : [ "" ],
 													"patching_rect" : [ 151.0, 52.0, 18.0, 18.0 ]
 												}
 
@@ -912,16 +913,16 @@
 					"presentation_rect" : [ 185.999999165534973, 1.0, 36.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_shortname" : "Map",
-							"parameter_type" : 0,
-							"parameter_unitstyle" : 0,
-							"parameter_linknames" : 1,
-							"parameter_mmin" : -100.0,
 							"parameter_longname" : "Curve1[1]",
 							"parameter_initial_enable" : 1,
 							"parameter_modmode" : 2,
 							"parameter_mmax" : 100.0,
-							"parameter_initial" : [ 0 ]
+							"parameter_initial" : [ 0 ],
+							"parameter_shortname" : "Map",
+							"parameter_type" : 0,
+							"parameter_unitstyle" : 0,
+							"parameter_linknames" : 1,
+							"parameter_mmin" : -100.0
 						}
 
 					}
@@ -1135,11 +1136,11 @@
 									"presentation_rect" : [ 40.0, 16.0, 40.0, 15.0 ],
 									"saved_attribute_attributes" : 									{
 										"valueof" : 										{
+											"parameter_longname" : "live.text[1]",
+											"parameter_mmax" : 1,
 											"parameter_shortname" : "live.text",
 											"parameter_enum" : [ "uninverted", "inverted" ],
-											"parameter_type" : 2,
-											"parameter_longname" : "live.text[1]",
-											"parameter_mmax" : 1
+											"parameter_type" : 2
 										}
 
 									}
@@ -1290,17 +1291,17 @@
 									"prototypename" : "amount",
 									"saved_attribute_attributes" : 									{
 										"valueof" : 										{
+											"parameter_longname" : "Max[2]",
+											"parameter_initial_enable" : 1,
+											"parameter_modmode" : 4,
+											"parameter_mmax" : 100.0,
+											"parameter_initial" : [ 100.0 ],
 											"parameter_speedlim" : 0.0,
 											"parameter_shortname" : "Max 1",
 											"parameter_type" : 1,
 											"parameter_unitstyle" : 5,
 											"parameter_linknames" : 1,
-											"parameter_units" : "%",
-											"parameter_longname" : "Max[2]",
-											"parameter_initial_enable" : 1,
-											"parameter_modmode" : 4,
-											"parameter_mmax" : 100.0,
-											"parameter_initial" : [ 100.0 ]
+											"parameter_units" : "%"
 										}
 
 									}
@@ -1347,7 +1348,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 94.0, 129.246643000000006, 52.0, 22.0 ],
-									"text" : "0.22041"
+									"text" : "0."
 								}
 
 							}
@@ -1385,17 +1386,17 @@
 									"prototypename" : "amount",
 									"saved_attribute_attributes" : 									{
 										"valueof" : 										{
+											"parameter_longname" : "Max[3]",
+											"parameter_initial_enable" : 1,
+											"parameter_modmode" : 4,
+											"parameter_mmax" : 100.0,
+											"parameter_initial" : [ 100.0 ],
 											"parameter_speedlim" : 0.0,
 											"parameter_shortname" : "Max 1",
 											"parameter_type" : 1,
 											"parameter_unitstyle" : 5,
 											"parameter_linknames" : 1,
-											"parameter_units" : "%",
-											"parameter_longname" : "Max[3]",
-											"parameter_initial_enable" : 1,
-											"parameter_modmode" : 4,
-											"parameter_mmax" : 100.0,
-											"parameter_initial" : [ 100.0 ]
+											"parameter_units" : "%"
 										}
 
 									}
@@ -1426,17 +1427,17 @@
 									"prototypename" : "amount",
 									"saved_attribute_attributes" : 									{
 										"valueof" : 										{
+											"parameter_longname" : "Min[1]",
+											"parameter_initial_enable" : 1,
+											"parameter_modmode" : 4,
+											"parameter_mmax" : 100.0,
+											"parameter_initial" : [ 0 ],
 											"parameter_speedlim" : 0.0,
 											"parameter_shortname" : "Min 1",
 											"parameter_type" : 1,
 											"parameter_unitstyle" : 5,
 											"parameter_linknames" : 1,
-											"parameter_units" : "%",
-											"parameter_longname" : "Min[1]",
-											"parameter_initial_enable" : 1,
-											"parameter_modmode" : 4,
-											"parameter_mmax" : 100.0,
-											"parameter_initial" : [ 0 ]
+											"parameter_units" : "%"
 										}
 
 									}
@@ -1779,7 +1780,7 @@
 													"numoutlets" : 1,
 													"outlettype" : [ "" ],
 													"patching_rect" : [ 64.0, 208.0, 50.0, 20.0 ],
-													"text" : "0.22041"
+													"text" : "0."
 												}
 
 											}
@@ -5441,13 +5442,13 @@
 					"presentation_rect" : [ 84.0, 1.0, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "Unmap[8]",
+							"parameter_invisible" : 2,
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "unmap",
 							"parameter_enum" : [ "val1", "val2" ],
 							"parameter_type" : 2,
-							"parameter_linknames" : 1,
-							"parameter_longname" : "Unmap[8]",
-							"parameter_invisible" : 2,
-							"parameter_mmax" : 1
+							"parameter_linknames" : 1
 						}
 
 					}
@@ -5498,16 +5499,16 @@
 					"prototypename" : "onoff",
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "Map[8]",
+							"parameter_invisible" : 2,
+							"parameter_mmax" : 1,
+							"parameter_initial" : [ 0.0 ],
 							"parameter_speedlim" : 0.0,
 							"parameter_shortname" : "Map",
 							"parameter_enum" : [ "off", "on" ],
 							"parameter_defer" : 1,
 							"parameter_type" : 2,
-							"parameter_linknames" : 1,
-							"parameter_longname" : "Map[8]",
-							"parameter_invisible" : 2,
-							"parameter_mmax" : 1,
-							"parameter_initial" : [ 0.0 ]
+							"parameter_linknames" : 1
 						}
 
 					}
@@ -5633,7 +5634,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 22.0, 595.0, 50.0, 20.0 ],
-									"text" : "0.22041"
+									"text" : "0."
 								}
 
 							}
@@ -5685,7 +5686,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 117.0, 356.0, 50.0, 20.0 ],
-									"text" : "0.22041"
+									"text" : "0."
 								}
 
 							}
@@ -8787,13 +8788,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-36", 0 ],
-					"source" : [ "obj-57", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-10", 0 ],
 					"order" : 0,
 					"source" : [ "obj-7", 0 ]
@@ -8917,14 +8911,14 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-57::obj-20" : [ "Max[3]", "Max 1", 0 ],
-			"obj-57::obj-26" : [ "Min[1]", "Min 1", 0 ],
+			"obj-19" : [ "Map[8]", "Map", 0 ],
+			"obj-146" : [ "Curve1[1]", "Map", 0 ],
 			"obj-57::obj-39" : [ "Max[2]", "Max 1", 0 ],
 			"obj-57::obj-49" : [ "live.text[1]", "live.text", 0 ],
-			"obj-18" : [ "live.menu", "live.menu", 0 ],
 			"obj-15" : [ "Unmap[8]", "unmap", 0 ],
-			"obj-146" : [ "Curve1[1]", "Map", 0 ],
-			"obj-19" : [ "Map[8]", "Map", 0 ],
+			"obj-18" : [ "live.menu", "live.menu", 0 ],
+			"obj-57::obj-20" : [ "Max[3]", "Max 1", 0 ],
+			"obj-57::obj-26" : [ "Min[1]", "Min 1", 0 ],
 			"parameterbanks" : 			{
 
 			}

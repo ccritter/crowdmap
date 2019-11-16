@@ -39,6 +39,17 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 369.0, 498.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-4",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -121,13 +132,13 @@
 					"presentation_rect" : [ 324.0, 6.760071000000011, 54.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_enum" : [ "val1", "val2" ],
+							"parameter_type" : 1,
 							"parameter_longname" : "live.text",
 							"parameter_initial_enable" : 1,
 							"parameter_mmax" : 1.0,
 							"parameter_initial" : [ 1 ],
-							"parameter_shortname" : "live.text",
-							"parameter_enum" : [ "val1", "val2" ],
-							"parameter_type" : 1
+							"parameter_shortname" : "live.text"
 						}
 
 					}
@@ -212,12 +223,12 @@
 					"presentation_rect" : [ 27.247604000000024, 3.260071000000011, 220.752395999999976, 22.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_type" : 3,
 							"parameter_longname" : "textedit",
 							"parameter_initial_enable" : 1,
 							"parameter_invisible" : 1,
 							"parameter_initial" : [ "<empty>" ],
-							"parameter_shortname" : "textedit",
-							"parameter_type" : 3
+							"parameter_shortname" : "textedit"
 						}
 
 					}
@@ -427,12 +438,12 @@
 					"rounded" : 15.0,
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_enum" : [ "off", "on" ],
+							"parameter_type" : 2,
 							"parameter_longname" : "live.toggle[1]",
 							"parameter_invisible" : 1,
 							"parameter_mmax" : 1,
-							"parameter_shortname" : "live.toggle",
-							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2
+							"parameter_shortname" : "live.toggle"
 						}
 
 					}
@@ -464,15 +475,15 @@
 					"presentation_rect" : [ 0.0, 5.0, 34.0, 18.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_enum" : [ "Off", "On" ],
+							"parameter_type" : 2,
+							"parameter_linknames" : 1,
 							"parameter_longname" : "Bypass 1",
 							"parameter_initial_enable" : 1,
 							"parameter_mmax" : 1,
 							"parameter_initial" : [ 1.0 ],
 							"parameter_shortname" : "Bypass 1",
-							"parameter_mapping_index" : 9,
-							"parameter_enum" : [ "Off", "On" ],
-							"parameter_type" : 2,
-							"parameter_linknames" : 1
+							"parameter_mapping_index" : 9
 						}
 
 					}
@@ -530,11 +541,11 @@
 					"presentation_rect" : [ 250.0, 6.760071000000011, 72.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_enum" : [ "Rest", "Tap", "Text", "Orientation", "Orientation Alpha", "Orientation Beta", "Orientation Gamma", "Acceleration", "Acceleration X", "Acceleration Y", "Acceleration Z", "Rotation Speed" ],
+							"parameter_type" : 2,
 							"parameter_longname" : "live.menu[1]",
 							"parameter_mmax" : 11,
-							"parameter_shortname" : "live.menu",
-							"parameter_enum" : [ "Rest", "Tap", "Text", "Orientation", "Orientation Alpha", "Orientation Beta", "Orientation Gamma", "Acceleration", "Acceleration X", "Acceleration Y", "Acceleration Z", "Rotation Speed" ],
-							"parameter_type" : 2
+							"parameter_shortname" : "live.menu"
 						}
 
 					}
@@ -925,26 +936,35 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"order" : 0,
+					"source" : [ "obj-84", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-83", 0 ],
+					"order" : 1,
 					"source" : [ "obj-84", 0 ]
 				}
 
 			}
  ],
 		"parameters" : 		{
-			"obj-13::obj-19" : [ "Map[8]", "Map", 0 ],
-			"obj-13::obj-146" : [ "Curve1[1]", "Map", 0 ],
-			"obj-15" : [ "Bypass 1", "Bypass 1", 0 ],
-			"obj-13::obj-57::obj-39" : [ "Max[2]", "Max 1", 0 ],
-			"obj-16" : [ "live.toggle[1]", "live.toggle", 0 ],
-			"obj-13::obj-57::obj-49" : [ "live.text[1]", "live.text", 0 ],
-			"obj-19" : [ "live.menu[1]", "live.menu", 0 ],
 			"obj-13::obj-15" : [ "Unmap[8]", "unmap", 0 ],
-			"obj-78" : [ "live.text", "live.text", 0 ],
-			"obj-25" : [ "textedit", "textedit", 0 ],
-			"obj-13::obj-18" : [ "live.menu[2]", "live.menu", 0 ],
+			"obj-16" : [ "live.toggle[1]", "live.toggle", 0 ],
 			"obj-13::obj-57::obj-20" : [ "Max[3]", "Max 1", 0 ],
 			"obj-13::obj-57::obj-26" : [ "Min[1]", "Min 1", 0 ],
+			"obj-19" : [ "live.menu[1]", "live.menu", 0 ],
+			"obj-15" : [ "Bypass 1", "Bypass 1", 0 ],
+			"obj-13::obj-57::obj-49" : [ "live.text[1]", "live.text", 0 ],
+			"obj-78" : [ "live.text", "live.text", 0 ],
+			"obj-13::obj-19" : [ "Map[8]", "Map", 0 ],
+			"obj-13::obj-146" : [ "Curve1[1]", "Map", 0 ],
+			"obj-13::obj-18" : [ "live.menu[2]", "live.menu", 0 ],
+			"obj-25" : [ "textedit", "textedit", 0 ],
+			"obj-13::obj-57::obj-39" : [ "Max[2]", "Max 1", 0 ],
 			"parameterbanks" : 			{
 
 			}

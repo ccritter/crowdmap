@@ -113,9 +113,9 @@ module.exports = function(wss) {
       // TODO Need to check heartbeat for terminated connections as well: https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
       if (client) {
         if (socketPort.id === client.socket.id) {
-          client.remove();
+          let crowd = client.remove();
+          waitingRoom = waitingRoom.concat(crowd);
           client = undefined;
-          // TODO Move everyone back into the waiting room
         } else {
           client.removeAudienceMember(socketPort);
         }

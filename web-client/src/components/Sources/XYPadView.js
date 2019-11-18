@@ -1,5 +1,4 @@
 import React from 'react';
-import Hammer from 'hammerjs';
 
 export default class XYPadView extends React.Component {
   constructor(props) {

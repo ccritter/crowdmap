@@ -10,27 +10,39 @@ export default class XYPadView extends React.Component {
   }
 
   componentDidMount() {
-    // TODO Make sure this doesn't continue to fire if the view changes while mouse is held down.
     this.dragArea = document.getElementById("XYView");
 
-    this.dragArea.onmousedown = (e) => {
-      this.setXY(e.x, e.y);
+    // TODO This doesn't work in regular browsers, which may be ok.
+    this.handleTouch = e => {
+      e.preventDefault();
+      let touch = e.changedTouches[0]; // TODO This can be modified to allow multitouch.
+      this.setXY(touch.clientX, touch.clientY);
+    };
 
-      let onMouseMove = (e) => {
-        this.setXY(e.x, e.y);
-      }
-      document.addEventListener('mousemove', onMouseMove);
-      this.dragArea.onmouseup = () => {
-        document.removeEventListener('mousemove', onMouseMove);
-        this.dragArea.onmouseup = null;
-      }
-    }
+    this.dragArea.addEventListener('touchstart', this.handleTouch);
+    this.dragArea.addEventListener('touchmove', this.handleTouch);
+    // this.dragArea.addEventListener('mousedown touchstart', (e) => {
+    //   console.log('test')
+    //   e.preventDefault();
+    //   this.setXY(e.x, e.y);
+    //
+    //   let onMouseMove = (e) => {
+    //     e.preventDefault();
+    //     this.setXY(e.x, e.y);
+    //   }
+    //   let endDrag = (e) => {
+    //     e.preventDefault();
+    //     document.removeEventListener('mousemove touchmove', onMouseMove);
+    //     this.dragArea.removeEventListener('mouseup touchend', endDrag);
+    //   }
+    //   document.addEventListener('mousemove touchmove', onMouseMove);
+    //   this.dragArea.addEventListener('mouseup touchend', endDrag)
+    // });
   }
 
   componentWillUnmount() {
-    if (this.dragArea.onmouseup) {
-      this.dragArea.onmouseup();
-    }
+    this.dragArea.removeEventListener('touchstart', this.handleTouch);
+    this.dragArea.removeEventListener('touchmove', this.handleTouch);
   }
 
   setXY(x, y) {

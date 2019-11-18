@@ -4,6 +4,7 @@ import TapView from './TapView'
 import TextView from './TextView'
 import OrientationView from './OrientationView'
 import MovementView from './MovementView'
+import XYPadView from './XYPadView'
 
 // This must be the same as found in lib/aggregators/SourceFactory
 export const srcTypes = Object.freeze({
@@ -19,6 +20,7 @@ export const srcTypes = Object.freeze({
   accely: 9,
   accelz: 10,
   accelr: 11,
+  xypad: 12
 });
 
 export function SourceFactory(data) {
@@ -40,6 +42,8 @@ export function SourceFactory(data) {
     case srcTypes.accelz:
     case srcTypes.accelr:
       return <MovementView config={data}/>;
+    case srcTypes.xypad:
+      return <XYPadView config={data}/>
     default:
       return <RestView config={data}/>;
     // case srcTypes.accel:

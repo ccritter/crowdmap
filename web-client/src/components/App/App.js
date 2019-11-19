@@ -17,20 +17,22 @@ class App extends React.Component {
 
   componentDidMount () {
     this.port = new osc.WebSocketPort({
-      // url: 'ws://localhost:3000/ws'
-      url: 'wss://crowdmap.fm/ws'
+      // url: 'ws://localhost:3000/ws',
+      url: 'wss://crowdmap.fm/ws',
+      metadata: true
     });
 
     this.port.on('message', (oscMsg) => {
       // console.log('Got WS: ', oscMsg);
       let destination = oscMsg.address;
-      let prompt = oscMsg.args[1];
       let sourceType;
+      let prompt;
       if (destination === '/0') {
-        prompt = 'Please wait.'
         sourceType = 0;
+        prompt = 'Please wait.'
       } else {
-        sourceType = oscMsg.args[0];
+        sourceType = oscMsg.args[0].value;
+        prompt = oscMsg.args[1].value;
       }
       this.setState({ destination, sourceType, prompt });
     });

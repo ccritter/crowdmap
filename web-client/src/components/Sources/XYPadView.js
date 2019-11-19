@@ -59,7 +59,9 @@ export default class XYPadView extends React.Component {
     }
 
     if (shouldSend) {
-      this.props.config.socket.send({ address: this.props.config.destination, args: [this.x, this.y] });
+      this.props.config.socket.send({ address: this.props.config.destination, args: [
+        {type: 'f', value: this.x}, {type: 'f', value: this.y}
+      ]});
     }
   }
 

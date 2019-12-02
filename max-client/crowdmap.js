@@ -29,6 +29,7 @@ function openUdp() {
       sock = openSocket();
     } else {
       Max.outlet(msg.address, ...msg.args);
+      console.log(msg);
     }
     // console.log('Got UDP msg:');
     // console.log(msg);
@@ -56,7 +57,7 @@ function openSocket() {
   socketPort.on('ready', () => {
     console.log('Socket connected. Sending Hello!');
     
-    Max.getDict('config').then((dict, err) => {
+    Max.getDict('---config').then((dict, err) => {
       if (err) {
         console.log(err);
       } else {

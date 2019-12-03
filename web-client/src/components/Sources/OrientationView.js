@@ -37,12 +37,10 @@ export default class RestView extends React.Component {
   }
 
   componentDidMount() {
-    // ADD LISTENERS
     window.addEventListener('deviceorientation', this.handleOrientation, false);
   }
 
   componentWillUnmount() {
-    // REMOVE LISTENERS
     window.removeEventListener('deviceorientation', this.handleOrientation, false);
   }
 

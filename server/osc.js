@@ -5,6 +5,7 @@ const Client = require('../lib/core/Client');
 module.exports = function(wss) {
   // Only one client per instance.
   let client;
+  let clientTimeout;
   let waitingRoom = [];
 
   /**
@@ -26,7 +27,7 @@ module.exports = function(wss) {
 
   /**
    * Handler for UDP messages. The only UDP messages the server receives is a /hello message from the client
-   * so that the server knows where to send messages. TODO: Create a non UDP-mode as a failsafe (only WebSocket)
+   * so that the server knows where to send messages.
    *
    * @param msg JSON containing the OSC address and args
    * @param timeTag OSC Timetag of the message
@@ -34,11 +35,16 @@ module.exports = function(wss) {
    */
   udpPort.on('message', (msg, timeTag, info) => {
     try {
-      if (msg.address === '/hello') {
+      if (msg.address === '/hello' && !client) {
+        if (client && !client.isActive) {
+          clearTimeout(clientTimeout);
+        }
+
+        console.log('Client connected');
         client = new Client(info.address, info.port, udpPort);
 
-        // If we haven't configured the Client within 5 seconds, disconnect it.
-        setTimeout(() => {
+        // If we haven't configured the Client within 5 seconds, disconnect it. TODO If the UDP client disconnects before this expires we crash
+        clientTimeout = setTimeout(() => {
           if (client && !client.isConfigured) {
             udpPort.send({
               address: '/error',
@@ -59,9 +65,20 @@ module.exports = function(wss) {
 
   udpPort.open();
 
+  setInterval(() => {
+    wss.clients.forEach(ws => {
+      if (ws.isAlive === false) return ws.terminate();
+
+      ws.isAlive = false;
+      ws.ping();
+    });
+  }, 30000);
+
 
   wss.on('connection', (socket, req) => {
     console.log('Socket connected.');
+    socket.isAlive = true;
+    socket.on('pong', () => socket.isAlive = true);
 
     let socketPort = new osc.WebSocketPort({ socket });
     socketPort.id = uuidv4();
@@ -109,9 +126,8 @@ module.exports = function(wss) {
       console.log('Socket Error', e)
     });
 
-    socket.on('close', () => {
-      // TODO Need to check heartbeat for terminated connections as well: https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
-      if (client) {
+    socketPort.on('close', () => {
+      if (client && client.isActive) {
         if (socketPort.id === client.socket.id) {
           let crowd = client.remove();
           waitingRoom = waitingRoom.concat(crowd);

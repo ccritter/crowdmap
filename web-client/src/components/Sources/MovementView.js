@@ -41,12 +41,10 @@ export default class MovementView extends React.Component {
   }
 
   componentDidMount() {
-    // ADD LISTENERS
     window.addEventListener('devicemotion', this.handleMotion, false);
   }
 
   componentWillUnmount() {
-    // REMOVE LISTENERS
     window.removeEventListener('devicemotion', this.handleMotion, false);
   }
 

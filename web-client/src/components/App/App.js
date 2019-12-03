@@ -10,15 +10,15 @@ class App extends React.Component {
     this.state = {
       destination: '/0',
       sourceType: 0,
-      prompt: 'Please wait for the show to begin.',
+      prompt: 'Connecting...',
       ready: false
     }
   }
 
   componentDidMount () {
     this.port = new osc.WebSocketPort({
-      // url: 'ws://localhost:3000/ws',
-      url: 'wss://crowdmap.fm/ws',
+      url: 'ws://localhost:3000/ws',
+      // url: 'wss://crowdmap.fm/ws',
       metadata: true
     });
 
@@ -37,14 +37,15 @@ class App extends React.Component {
       this.setState({ destination, sourceType, prompt });
     });
 
-    this.port.open();
-    // TODO Use this.
-    this.setState({ ready: true });
+    this.port.on('ready', () => {
+      this.setState({ prompt: 'Please wait for the show to begin.' });
+    })
 
+    this.port.open();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    navigator.vibrate(200);
+    navigator.vibrate(100);
   }
 
   checkCompatibility() {
@@ -62,6 +63,7 @@ class App extends React.Component {
   }
 
   render() {
+    // let ready = this.state.ready;
     return (
       <div className="App">
         <SourceFactory destination={this.state.destination}
@@ -69,6 +71,7 @@ class App extends React.Component {
                        prompt={this.state.prompt}
                        socket={this.port}
         />
+
         {/*<img src={logo} className="App-logo" alt="logo" />*/}
         {/*<p>*/}
         {/*  Edit <code>src/App.js</code> and save to reload.*/}

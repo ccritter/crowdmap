@@ -1,5 +1,4 @@
 const osc = require("osc");
-const WebSocket = require('ws');
 const Max = require('max-api');
 
 const url = 'crowdmap.fm';
@@ -29,6 +28,7 @@ function openUdp() {
       sock = openSocket();
     } else {
       Max.outlet(msg.address, ...msg.args);
+      console.log(msg);
     }
     // console.log('Got UDP msg:');
     // console.log(msg);
@@ -48,15 +48,15 @@ function openUdp() {
 
 function openSocket() {
   let socketPort = new osc.WebSocketPort({
-    // url: 'ws://' + url + ':3000/ws',
-    url: 'wss://' + url + '/ws',
+    url: 'ws://' + url + ':3000/ws',
+    // url: 'wss://' + url + '/ws',
     metadata: true
   });
 
   socketPort.on('ready', () => {
     console.log('Socket connected. Sending Hello!');
     
-    Max.getDict('config').then((dict, err) => {
+    Max.getDict('---config').then((dict, err) => {
       if (err) {
         console.log(err);
       } else {
@@ -102,16 +102,12 @@ function openSocket() {
   return socketPort;
 }
 
-process.on('SIGINT', function() {
-  process.exit();
+['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'SIGTERM'].forEach(eventType => {
+  process.on(eventType, cleanUp.bind(null, eventType));
 });
 
-process.on('exit', function(code) {
-  cleanup();
-});
-
-function cleanUp() {
-  console.log('goodbye!');
+function cleanUp(type) {
+  console.log(type + 'goodbye!');
 
   udp.close();
 

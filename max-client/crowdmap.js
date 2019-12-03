@@ -9,6 +9,9 @@ let udp = openUdp();
 let sock;
 
 function openUdp() {
+  let attempts = 0;
+  let retry;
+
   let udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
     localPort: 57122, // port,
@@ -18,13 +21,17 @@ function openUdp() {
 
   udpPort.on('ready', () => {
     console.log('UDP Ready. Sending Hello!');
-
-    udpPort.send({address: '/hello'});
+    retry = setInterval(() => {
+      attempts++;
+      console.log('Login attempt ' + attempts)
+      udpPort.send({address: '/hello'});
+    }, 1000);
   });
 
   udpPort.on('message', (msg, timeTag, info) => {
     if (msg.address === '/hello') {
       console.log('UDP registered successfully.');
+      clearInterval(retry);
       sock = openSocket();
     } else {
       Max.outlet(msg.address, ...msg.args);
@@ -42,14 +49,13 @@ function openUdp() {
   });
 
   udpPort.open();
-
   return udpPort;
 }
 
 function openSocket() {
   let socketPort = new osc.WebSocketPort({
-    url: 'ws://' + url + ':3000/ws',
-    // url: 'wss://' + url + '/ws',
+    // url: 'ws://' + url + ':3000/ws',
+    url: 'wss://' + url + '/ws',
     metadata: true
   });
 
@@ -87,10 +93,6 @@ function openSocket() {
       // TODO Eventually put errors into an outlet and display it on the Live device
       console.log('Got Socket msg:', msg);
     }
-    // console.log(msg);
-    // console.log(timeTag);
-    // console.log(info);
-    // console.log('');
   });
 
   socketPort.on('error', e => {

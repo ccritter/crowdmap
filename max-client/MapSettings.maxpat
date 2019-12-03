@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 1,
-			"revision" : 0,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 207.0, 262.0, 817.0, 603.0 ],
+		"rect" : [ 833.0, 234.0, 817.0, 603.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,12 +39,38 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-6",
-					"maxclass" : "comment",
+					"id" : "obj-50",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 382.5, 402.315368999999976, 199.0, 22.0 ],
+					"text" : "script connect distributor 0 sender 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-47",
+					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 329.0, 369.876678500000025, 150.0, 20.0 ],
-					"text" : "TODO 3 dashes here?"
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "int" ],
+					"patching_rect" : [ 372.0, 343.5, 29.5, 22.0 ],
+					"text" : "t b i"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-35",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 382.5, 430.0, 67.0, 22.0 ],
+					"save" : [ "#N", "thispatcher", ";", "#Q", "end", ";" ],
+					"text" : "thispatcher"
 				}
 
 			}
@@ -57,17 +83,6 @@
 					"outlettype" : [ "bang", "bang", "bang", "bang" ],
 					"patching_rect" : [ 72.5, 120.0, 72.0, 22.0 ],
 					"text" : "bangbang 4"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-3",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 429.0, 435.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -102,19 +117,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 295.25, 391.876678500000025, 147.0, 22.0 ],
-					"text" : "sprintf send crowdmap-%i"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-83",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 295.25, 422.630035500000076, 49.0, 22.0 ],
-					"text" : "forward"
+					"patching_rect" : [ 382.5, 376.0, 307.0, 22.0 ],
+					"text" : "sprintf script newdefault sender 275 400 s crowdmap-%i"
 				}
 
 			}
@@ -138,7 +142,8 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
 					"patching_rect" : [ 275.75, 343.5, 42.0, 22.0 ],
-					"text" : "gate 2"
+					"text" : "gate 2",
+					"varname" : "distributor"
 				}
 
 			}
@@ -155,13 +160,13 @@
 					"presentation_rect" : [ 324.0, 6.760071000000011, 54.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.text[6]",
+							"parameter_initial_enable" : 1,
 							"parameter_mmax" : 1.0,
 							"parameter_initial" : [ 1 ],
 							"parameter_shortname" : "live.text",
 							"parameter_enum" : [ "val1", "val2" ],
-							"parameter_type" : 1,
-							"parameter_longname" : "live.text",
-							"parameter_initial_enable" : 1
+							"parameter_type" : 1
 						}
 
 					}
@@ -246,12 +251,12 @@
 					"presentation_rect" : [ 27.247604000000024, 3.260071000000011, 220.752395999999976, 22.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_initial" : [ "<empty>" ],
-							"parameter_shortname" : "textedit",
-							"parameter_type" : 3,
 							"parameter_longname" : "textedit",
 							"parameter_initial_enable" : 1,
-							"parameter_invisible" : 1
+							"parameter_invisible" : 1,
+							"parameter_initial" : [ "<empty>" ],
+							"parameter_shortname" : "textedit",
+							"parameter_type" : 3
 						}
 
 					}
@@ -281,7 +286,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 576.0, 101.0, 230.0, 22.0 ],
-					"text" : "varname \"Bypass 1\", text 1, texton 1",
+					"text" : "varname \"Bypass 3\", text 3, texton 3",
 					"varname" : "Bypass 10"
 				}
 
@@ -461,12 +466,12 @@
 					"rounded" : 15.0,
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.toggle[2]",
+							"parameter_invisible" : 1,
 							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.toggle",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.toggle[1]",
-							"parameter_invisible" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -498,23 +503,23 @@
 					"presentation_rect" : [ 0.0, 5.0, 34.0, 18.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "Bypass 3",
+							"parameter_initial_enable" : 1,
 							"parameter_mmax" : 1,
 							"parameter_initial" : [ 1.0 ],
 							"parameter_shortname" : "Bypass 1",
 							"parameter_mapping_index" : 9,
 							"parameter_enum" : [ "Off", "On" ],
 							"parameter_type" : 2,
-							"parameter_linknames" : 1,
-							"parameter_longname" : "Bypass 1",
-							"parameter_initial_enable" : 1
+							"parameter_linknames" : 1
 						}
 
 					}
 ,
-					"text" : "1",
+					"text" : "3",
 					"textcolor" : [ 1.0, 1.0, 1.0, 0.501961 ],
-					"texton" : "1",
-					"varname" : "Bypass 1"
+					"texton" : "3",
+					"varname" : "Bypass 3"
 				}
 
 			}
@@ -531,7 +536,7 @@
 					"name" : "M4L.MapButtonMultiSingle.maxpat",
 					"numinlets" : 4,
 					"numoutlets" : 3,
-					"offset" : [ 0.0, 0.0 ],
+					"offset" : [ 0.0, -18.0 ],
 					"outlettype" : [ "", "", "int" ],
 					"patching_rect" : [ 530.25, 176.0, 300.0, 16.0 ],
 					"presentation" : 1,
@@ -564,11 +569,11 @@
 					"presentation_rect" : [ 250.0, 6.760071000000011, 72.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_mmax" : 13,
+							"parameter_longname" : "live.menu[2]",
+							"parameter_mmax" : 14,
 							"parameter_shortname" : "live.menu",
-							"parameter_enum" : [ "Rest", "Tap", "Text", "Orientation", "Orientation Alpha", "Orientation Beta", "Orientation Gamma", "Acceleration", "Acceleration X", "Acceleration Y", "Acceleration Z", "Rotation Speed", "XY Pad", "Horizontal Swipe" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.menu[1]"
+							"parameter_enum" : [ "Rest", "Tap", "Tap Rate", "Text", "Orientation", "Orientation Alpha", "Orientation Beta", "Orientation Gamma", "Acceleration", "Acceleration X", "Acceleration Y", "Acceleration Z", "Rotation Speed", "XY Pad", "Swipe" ],
+							"parameter_type" : 2
 						}
 
 					}
@@ -796,16 +801,16 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-5", 1 ],
-					"order" : 3,
+					"destination" : [ "obj-47", 0 ],
+					"order" : 1,
 					"source" : [ "obj-27", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-84", 0 ],
-					"order" : 1,
+					"destination" : [ "obj-5", 1 ],
+					"order" : 3,
 					"source" : [ "obj-27", 0 ]
 				}
 
@@ -833,6 +838,20 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-50", 0 ],
+					"source" : [ "obj-47", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-84", 0 ],
+					"source" : [ "obj-47", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-11", 3 ],
 					"source" : [ "obj-49", 0 ]
 				}
@@ -842,6 +861,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-11", 0 ],
 					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-50", 0 ]
 				}
 
 			}
@@ -948,13 +974,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-83", 0 ],
-					"source" : [ "obj-81", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-81", 0 ],
 					"source" : [ "obj-82", 0 ]
 				}
@@ -962,16 +981,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-3", 1 ],
-					"order" : 0,
-					"source" : [ "obj-84", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-83", 0 ],
-					"order" : 1,
+					"destination" : [ "obj-35", 0 ],
 					"source" : [ "obj-84", 0 ]
 				}
 
@@ -979,30 +989,19 @@
  ],
 		"parameters" : 		{
 			"obj-13::obj-57::obj-39" : [ "Max[2]", "Max 1", 0 ],
-			"obj-78" : [ "live.text", "live.text", 0 ],
 			"obj-25" : [ "textedit", "textedit", 0 ],
-			"obj-13::obj-57::obj-49" : [ "live.text[1]", "live.text", 0 ],
+			"obj-15" : [ "Bypass 3", "Bypass 1", 0 ],
+			"obj-13::obj-18" : [ "live.menu", "live.menu", 0 ],
 			"obj-13::obj-19" : [ "Map[8]", "Map", 0 ],
-			"obj-15" : [ "Bypass 1", "Bypass 1", 0 ],
-			"obj-16" : [ "live.toggle[1]", "live.toggle", 0 ],
+			"obj-16" : [ "live.toggle[2]", "live.toggle", 0 ],
+			"obj-13::obj-57::obj-49" : [ "live.text[1]", "live.text", 0 ],
+			"obj-13::obj-146" : [ "Curve1[1]", "Map", 0 ],
 			"obj-13::obj-57::obj-20" : [ "Max[3]", "Max 1", 0 ],
 			"obj-13::obj-57::obj-26" : [ "Min[1]", "Min 1", 0 ],
-			"obj-19" : [ "live.menu[1]", "live.menu", 0 ],
+			"obj-78" : [ "live.text[6]", "live.text", 0 ],
 			"obj-13::obj-15" : [ "Unmap[8]", "unmap", 0 ],
-			"obj-13::obj-146" : [ "Curve1[1]", "Map", 0 ],
-			"obj-13::obj-18" : [ "live.menu[2]", "live.menu", 0 ],
+			"obj-19" : [ "live.menu[2]", "live.menu", 0 ],
 			"parameterbanks" : 			{
-
-			}
-,
-			"parameter_overrides" : 			{
-				"obj-13::obj-146" : 				{
-					"parameter_shortname" : "Map"
-				}
-,
-				"obj-13::obj-18" : 				{
-					"parameter_longname" : "live.menu[2]"
-				}
 
 			}
 

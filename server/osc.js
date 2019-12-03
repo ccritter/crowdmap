@@ -35,17 +35,19 @@ module.exports = function(wss) {
    */
   udpPort.on('message', (msg, timeTag, info) => {
     try {
-      if (msg.address === '/hello' && !client) {
-        if (client && !client.isActive) {
-          clearTimeout(clientTimeout);
-        }
-
+      // if (client && !client.isActive) {
+      //   clearTimeout(clientTimeout);
+      //   client.remove();
+      //   client = undefined;
+      // }
+      if (msg.address === '/hello' && (!client || !client.isActive)) {
         console.log('Client connected');
+        clearTimeout(clientTimeout);
         client = new Client(info.address, info.port, udpPort);
 
-        // If we haven't configured the Client within 5 seconds, disconnect it. TODO If the UDP client disconnects before this expires we crash
+        // If we haven't configured the Client within 5 seconds, disconnect it.
         clientTimeout = setTimeout(() => {
-          if (client && !client.isConfigured) {
+          if (client && !client.isActive) {
             udpPort.send({
               address: '/error',
               args: ['No TCP handshake received.']

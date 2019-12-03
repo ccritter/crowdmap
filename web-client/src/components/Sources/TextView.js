@@ -12,7 +12,8 @@ export default class RestView extends React.Component {
       e.preventDefault();
       value = e.target.value;
       e.target.value = '';
-    } else {
+    } else if (e.key.length === 1) {
+      // TODO I don't think this handles emojis
       value = e.key;
     }
     if (value) this.props.config.socket.send({ address: this.props.config.destination, args: [{ type: 's', value }] });
@@ -23,7 +24,7 @@ export default class RestView extends React.Component {
     return (
       <div className="fullscreen">
         {this.props.config.prompt}
-        <input type="text" placeholder="Type here" onKeyPress={this.handleKey}/>
+        <input type="text" placeholder="Type here" onKeyDown={this.handleKey}/>
       </div>
     )
   }

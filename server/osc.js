@@ -51,6 +51,7 @@ module.exports = function(wss) {
               args: ['No TCP handshake received.']
             });
             client.remove();
+            client = undefined;
           }
         }, 5000);
       }

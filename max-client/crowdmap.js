@@ -5,8 +5,15 @@ const url = 'crowdmap.fm';
 // const url = 'localhost';
 const port = 57121
 
-let udp = openUdp();
+let udp;
 let sock;
+let dictName;
+
+Max.addHandler('dictname', name => {
+  console.log('test')
+  dictName = name;
+  udp = openUdp();
+});
 
 function openUdp() {
   let attempts = 0;
@@ -61,8 +68,7 @@ function openSocket() {
 
   socketPort.on('ready', () => {
     console.log('Socket connected. Sending Hello!');
-    
-    Max.getDict('---config').then((dict, err) => {
+    Max.getDict(dictName).then((dict, err) => {
       if (err) {
         console.log(err);
       } else {

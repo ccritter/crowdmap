@@ -13,11 +13,7 @@ export default class SwipeView extends React.Component {
     this.hammer = new Hammer(this.swipeArea);
     // TODO Figure out how this could be improved to do swipes in 4 directions rather than 2.
     this.hammer.on('swipeleft swiperight', e => {
-      let val = 'F';
-
-      if (e.type === 'swiperight') {
-        val = 'T';
-      } // Else swipeleft, returns false
+      let val = e.type === 'swiperight' ? 'T' : 'F';
 
       this.props.config.socket.send({ address: this.props.config.destination, args: [{type: val}] });
     });

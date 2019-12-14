@@ -97,7 +97,6 @@ module.exports = function(wss) {
     // });
 
     let msgHandler = (msg, timeTag, info) => {
-      // console.log('Got Socket message.', msg);
       if (msg.address === '/hello') {
         // Remove the message listener, since the client creates its own message listening function.
         if (client && !client.isConfigured) {

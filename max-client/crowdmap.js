@@ -10,7 +10,6 @@ let sock;
 let dictName;
 
 Max.addHandler('dictname', name => {
-  console.log('test')
   dictName = name;
   udp = openUdp();
 });

@@ -23,7 +23,6 @@ class App extends React.Component {
     });
 
     this.port.on('message', (oscMsg) => {
-      // console.log('Got WS: ', oscMsg);
       let destination = oscMsg.address;
       let sourceType;
       let prompt;
@@ -63,7 +62,6 @@ class App extends React.Component {
   }
 
   render() {
-    // let ready = this.state.ready;
     return (
       <div className="App">
         <SourceFactory destination={this.state.destination}
@@ -73,17 +71,6 @@ class App extends React.Component {
         />
 
         {/*<img src={logo} className="App-logo" alt="logo" />*/}
-        {/*<p>*/}
-        {/*  Edit <code>src/App.js</code> and save to reload.*/}
-        {/*</p>*/}
-        {/*<a*/}
-        {/*  className="App-link"*/}
-        {/*  href="https://reactjs.org"*/}
-        {/*  target="_blank"*/}
-        {/*  rel="noopener noreferrer"*/}
-        {/*>*/}
-        {/*  Learn React*/}
-        {/*</a>*/}
       </div>
     );
   }
